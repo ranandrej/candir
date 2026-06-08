@@ -1,0 +1,598 @@
+---
+interface Service {
+  ime: string
+  cena: string
+  trajanje: string
+}
+
+interface Props {
+  services?: Service[]
+  timeSlots?: string[]
+  salonName?: string
+  salonAddress?: string
+}
+
+const {
+  services = [],
+  timeSlots = ['09:00', '10:30', '12:00', '13:30', '15:00', '16:30', '18:00', '19:00'],
+  salonName = 'Salon Candir',
+  salonAddress = 'Bate Brkića 26, Novi Sad',
+} = Astro.props
+---
+
+<div
+  class="overflow-hidden modal-overlay pointer-events-none fixed inset-0 z-[200] flex items-center justify-center bg-black/70 p-5 opacity-0 backdrop-blur-[8px] transition-opacity duration-[250ms] [&.open]:pointer-events-auto [&.open]:opacity-100"
+  id="bookingModal"
+  aria-hidden="true">
+  <div
+    class="overflow-hidden relative max-h-[90vh] w-full max-w-[520px] translate-y-2 scale-[0.96] rounded-xl border border-border-hi bg-bg-elevated p-7 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.9)] transition-transform duration-300 [.open_&]:translate-y-0 [.open_&]:scale-100 max-[480px]:p-[22px]"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Zakazivanje termina">
+    <button
+      class="absolute right-[18px] top-[18px] grid h-[30px] w-[30px] cursor-pointer place-items-center rounded-sm border border-border bg-surface text-text-2 transition-colors hover:bg-surface-hi hover:text-text"
+      id="closeBooking"
+      aria-label="Zatvori">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"><path d="M18 6L6 18M6 6l12 12"></path></svg
+      >
+    </button>
+
+    <div class="mb-6 pr-10">
+      <h2 class="text-xl font-bold tracking-[-0.02em]">Zakazivanje termina</h2>
+      <p class="mt-1 text-[13px] text-text-3">{salonName} · {salonAddress}</p>
+    </div>
+
+    <!-- step progress -->
+    <div class="relative mb-7 flex items-center">
+      <div
+        class="mstep active flex flex-col items-center gap-[5px] text-text-3 [&.active]:text-text"
+        data-step="1">
+        <div
+          class="grid h-7 w-7 place-items-center rounded-full border-[1.5px] border-border text-xs font-semibold transition-all [.active_&]:border-accent [.active_&]:bg-accent [.active_&]:text-white [.done_&]:border-accent-border [.done_&]:bg-accent-subtle [.done_&]:text-accent">
+          <span>1</span>
+        </div>
+        <span class="text-[11.5px] font-medium max-[480px]:hidden">Usluga</span>
+      </div>
+      <div class="mb-[17px] h-[1.5px] flex-1 bg-border"></div>
+      <div
+        class="mstep flex flex-col items-center gap-[5px] text-text-3 [&.active]:text-text"
+        data-step="2">
+        <div
+          class="grid h-7 w-7 place-items-center rounded-full border-[1.5px] border-border text-xs font-semibold transition-all [.active_&]:border-accent [.active_&]:bg-accent [.active_&]:text-white [.done_&]:border-accent-border [.done_&]:bg-accent-subtle [.done_&]:text-accent">
+          <span>2</span>
+        </div>
+        <span class="text-[11.5px] font-medium max-[480px]:hidden">Datum</span>
+      </div>
+      <div class="mb-[17px] h-[1.5px] flex-1 bg-border"></div>
+      <div
+        class="mstep flex flex-col items-center gap-[5px] text-text-3 [&.active]:text-text"
+        data-step="3">
+        <div
+          class="grid h-7 w-7 place-items-center rounded-full border-[1.5px] border-border text-xs font-semibold transition-all [.active_&]:border-accent [.active_&]:bg-accent [.active_&]:text-white [.done_&]:border-accent-border [.done_&]:bg-accent-subtle [.done_&]:text-accent">
+          <span>3</span>
+        </div>
+        <span class="text-[11.5px] font-medium max-[480px]:hidden">Vreme</span>
+      </div>
+      <div class="mb-[17px] h-[1.5px] flex-1 bg-border"></div>
+      <div
+        class="mstep flex flex-col items-center gap-[5px] text-text-3 [&.active]:text-text"
+        data-step="4">
+        <div
+          class="grid h-7 w-7 place-items-center rounded-full border-[1.5px] border-border text-xs font-semibold transition-all [.active_&]:border-accent [.active_&]:bg-accent [.active_&]:text-white [.done_&]:border-accent-border [.done_&]:bg-accent-subtle [.done_&]:text-accent">
+          <span>4</span>
+        </div>
+        <span class="text-[11.5px] font-medium max-[480px]:hidden">Podaci</span>
+      </div>
+      <div class="absolute -bottom-3 left-0 right-0 h-0.5 overflow-hidden rounded-sm bg-surface">
+        <i
+          id="mstepBar"
+          class="block h-full w-1/4 rounded-sm bg-accent transition-[width] duration-[450ms]"></i>
+      </div>
+    </div>
+
+    <!-- panel 1: usluga -->
+    <div
+      class="mpanel active hidden [&.active]:block [&.active]:animate-[mpanelIn_0.35s_cubic-bezier(0.16,1,0.3,1)]"
+      data-panel="1">
+      <p class="mb-2.5 text-[12.5px] font-semibold uppercase tracking-[0.04em] text-text-3">
+        Izaberi uslugu
+      </p>
+      <div class="mb-6 grid gap-1.5" id="mservices">
+        {
+          services.map(s => (
+            <button
+              type="button"
+              class="mservice flex cursor-pointer items-center justify-between gap-3 rounded-md border border-border bg-surface px-[15px] py-[13px] text-left text-text transition-colors hover:border-border-hi hover:bg-surface-hi [&.sel]:border-accent-border [&.sel]:bg-accent-subtle"
+              data-val={`${s.ime} — ${s.cena}`}>
+              <span class="text-sm font-semibold text-text">{s.ime}</span>
+              <span class="flex shrink-0 items-center gap-2.5">
+                <span class="flex items-center gap-1 text-xs text-text-3">
+                  <svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2">
+                    <>
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 6v6l4 2" />
+                    </>
+                  </svg>
+                  {s.trajanje}
+                </span>
+                <span class="text-[13px] font-semibold text-accent [font-variant-numeric:tabular-nums]">
+                  {s.cena}
+                </span>
+              </span>
+            </button>
+          ))
+        }
+      </div>
+      <div class="mt-5 flex justify-end">
+        <button
+          class="btn-modal-next inline-flex items-center gap-[7px] rounded-md bg-accent px-5 py-[11px] font-sans text-sm font-semibold text-white transition hover:enabled:-translate-y-px hover:enabled:bg-accent-2 disabled:cursor-not-allowed disabled:opacity-35"
+          data-go="2"
+          disabled
+          id="mnext1">
+          Nastavi
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg
+          >
+        </button>
+      </div>
+    </div>
+
+    <!-- panel 2: datum (kalendar) -->
+    <div
+      class="mpanel hidden [&.active]:block [&.active]:animate-[mpanelIn_0.35s_cubic-bezier(0.16,1,0.3,1)]"
+      data-panel="2">
+      <p class="mb-2.5 text-[12.5px] font-semibold uppercase tracking-[0.04em] text-text-3">
+        Izaberi datum
+      </p>
+      <div class="rounded-lg border border-border bg-surface p-4">
+        <div class="mb-3.5 flex items-center justify-between">
+          <button
+            type="button"
+            class="mcal-nav grid h-8 w-8 cursor-pointer place-items-center rounded-sm border border-border bg-bg-raised text-text-2 transition-all hover:enabled:border-accent-border hover:enabled:text-accent disabled:cursor-not-allowed disabled:opacity-30"
+            id="mcalPrev"
+            aria-label="Prethodni mesec">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.4"><path d="M15 18l-6-6 6-6"></path></svg
+            >
+          </button>
+          <strong id="mcalMonth" class="text-[15px] font-bold capitalize"></strong>
+          <button
+            type="button"
+            class="mcal-nav grid h-8 w-8 cursor-pointer place-items-center rounded-sm border border-border bg-bg-raised text-text-2 transition-all hover:enabled:border-accent-border hover:enabled:text-accent disabled:cursor-not-allowed disabled:opacity-30"
+            id="mcalNext"
+            aria-label="Sledeći mesec">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.4"><path d="M9 18l6-6-6-6"></path></svg
+            >
+          </button>
+        </div>
+        <div
+          class="mb-1.5 grid grid-cols-7 gap-[3px] [&>span]:text-center [&>span]:text-[10px] [&>span]:font-semibold [&>span]:uppercase [&>span]:text-text-3">
+          <span>Pon</span><span>Uto</span><span>Sre</span><span>Čet</span><span>Pet</span><span
+            >Sub</span
+          ><span>Ned</span>
+        </div>
+        <div class="grid grid-cols-7 gap-[3px]" id="mcalGrid"></div>
+        <div class="mt-3.5 flex gap-4 text-[11.5px] text-text-3">
+          <span
+            ><i class="mr-[5px] inline-block h-[9px] w-[9px] rounded-[3px] bg-accent align-middle"
+            ></i> Slobodno</span
+          >
+          <span
+            ><i
+              class="mr-[5px] inline-block h-[9px] w-[9px] rounded-[3px] bg-surface-hi align-middle"
+            ></i> Zatvoreno (utorak)</span
+          >
+        </div>
+      </div>
+      <div class="mt-5 flex justify-between">
+        <button
+          class="btn-modal-back mback inline-flex items-center gap-[7px] rounded-md border border-border bg-transparent px-4 py-[11px] font-sans text-sm font-medium text-text-2 transition hover:border-border-hi hover:bg-surface hover:text-text"
+          data-go="1">
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg
+          >
+          Nazad
+        </button>
+        <button
+          class="btn-modal-next inline-flex items-center gap-[7px] rounded-md bg-accent px-5 py-[11px] font-sans text-sm font-semibold text-white transition hover:enabled:-translate-y-px hover:enabled:bg-accent-2 disabled:cursor-not-allowed disabled:opacity-35"
+          data-go="3"
+          disabled
+          id="mnext2">
+          Nastavi
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg
+          >
+        </button>
+      </div>
+    </div>
+
+    <!-- panel 3: vreme -->
+    <div
+      class="mpanel hidden [&.active]:block [&.active]:animate-[mpanelIn_0.35s_cubic-bezier(0.16,1,0.3,1)]"
+      data-panel="3">
+      <div
+        class="mb-[18px] rounded-md border border-accent-border bg-accent-subtle px-3.5 py-[11px] text-[13px] text-text-2 [&_strong]:text-text"
+        id="mpickedDay">
+      </div>
+      <p class="mb-2.5 text-[12.5px] font-semibold uppercase tracking-[0.04em] text-text-3">
+        Slobodni termini
+      </p>
+      <div class="mb-1 grid grid-cols-4 gap-[7px] max-[480px]:grid-cols-3" id="mtimes">
+        {
+          timeSlots.map(t => (
+            <button
+              type="button"
+              class="mtime cursor-pointer rounded-sm border border-border bg-surface px-2 py-[11px] text-center text-[13.5px] font-semibold text-text-2 transition-all [font-variant-numeric:tabular-nums] hover:-translate-y-px hover:border-border-hi hover:text-text [&.sel]:border-accent-border [&.sel]:bg-accent-subtle [&.sel]:text-accent"
+              data-val={t}>
+              {t}
+            </button>
+          ))
+        }
+      </div>
+      <div class="mt-5 flex justify-between">
+        <button
+          class="btn-modal-back mback inline-flex items-center gap-[7px] rounded-md border border-border bg-transparent px-4 py-[11px] font-sans text-sm font-medium text-text-2 transition hover:border-border-hi hover:bg-surface hover:text-text"
+          data-go="2">
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg
+          >
+          Nazad
+        </button>
+        <button
+          class="btn-modal-next inline-flex items-center gap-[7px] rounded-md bg-accent px-5 py-[11px] font-sans text-sm font-semibold text-white transition hover:enabled:-translate-y-px hover:enabled:bg-accent-2 disabled:cursor-not-allowed disabled:opacity-35"
+          data-go="4"
+          disabled
+          id="mnext3">
+          Nastavi
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg
+          >
+        </button>
+      </div>
+    </div>
+
+    <!-- panel 4: podaci + potvrda -->
+    <div
+      class="mpanel hidden [&.active]:block [&.active]:animate-[mpanelIn_0.35s_cubic-bezier(0.16,1,0.3,1)]"
+      data-panel="4">
+      <div
+        class="mb-5 rounded-md border border-border bg-surface px-4 py-3.5 text-[13.5px] leading-[1.8] text-text-2"
+        id="mbooking-summary">
+      </div>
+      <div class="grid gap-3.5">
+        <div>
+          <label
+            class="mb-[7px] block text-[12.5px] font-semibold uppercase tracking-[0.04em] text-text-3"
+            for="mname">Ime i prezime</label
+          >
+          <input
+            class="w-full rounded-md border border-border bg-surface px-3.5 py-3 font-sans text-[14.5px] text-text transition placeholder:text-text-3 focus:border-accent-border focus:shadow-[0_0_0_3px_var(--color-accent-subtle)] focus:outline-none"
+            id="mname"
+            type="text"
+            placeholder="npr. Marija Marković"
+            autocomplete="name"
+          />
+        </div>
+        <div>
+          <label
+            class="mb-[7px] block text-[12.5px] font-semibold uppercase tracking-[0.04em] text-text-3"
+            for="mphone">Broj telefona</label
+          >
+          <input
+            class="w-full rounded-md border border-border bg-surface px-3.5 py-3 font-sans text-[14.5px] text-text transition placeholder:text-text-3 focus:border-accent-border focus:shadow-[0_0_0_3px_var(--color-accent-subtle)] focus:outline-none"
+            id="mphone"
+            type="tel"
+            placeholder="06x xxx xxxx"
+            autocomplete="tel"
+          />
+        </div>
+      </div>
+      <div class="mt-5 flex justify-between">
+        <button
+          class="btn-modal-back mback inline-flex items-center gap-[7px] rounded-md border border-border bg-transparent px-4 py-[11px] font-sans text-sm font-medium text-text-2 transition hover:border-border-hi hover:bg-surface hover:text-text"
+          data-go="3">
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg
+          >
+          Nazad
+        </button>
+        <button
+          class="btn-modal-confirm inline-flex items-center gap-[7px] rounded-md bg-green px-5 py-[11px] font-sans text-sm font-semibold text-white transition hover:-translate-y-px hover:bg-[#16a34a]"
+          id="mconfirm">
+          Potvrdi termin
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg
+          >
+        </button>
+      </div>
+    </div>
+
+    <!-- panel done -->
+    <div
+      class="mpanel hidden py-5 text-center [&.active]:flex [&.active]:flex-col [&.active]:items-center"
+      data-panel="done">
+      <div
+        class="mb-[18px] grid h-[60px] w-[60px] animate-[donePop_0.5s_cubic-bezier(0.16,1.4,0.3,1)] place-items-center rounded-full border border-[rgba(34,197,94,0.3)] bg-[rgba(34,197,94,0.1)] text-green">
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"><path d="M20 6L9 17l-5-5"></path></svg
+        >
+      </div>
+      <h3 class="mb-2 text-[22px] font-bold">Termin je rezervisan!</h3>
+      <p class="mb-6 text-sm leading-[1.6] text-text-2" id="mdoneText">
+        Vidimo se uskoro u salonu Candir.
+      </p>
+      <button
+        class="inline-flex cursor-pointer items-center rounded-md border border-border-hi bg-surface px-5 py-[11px] font-sans text-sm font-semibold text-text transition hover:border-text-3 hover:bg-surface-hi"
+        id="mreset">Zakaži još jedan termin</button
+      >
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('bookingModal')
+  if (modal) {
+    // ---- open / close ----
+    const openModal = () => {
+      modal.classList.add('open')
+      document.body.style.overflow = 'hidden'
+      modal.removeAttribute('aria-hidden')
+    }
+    const closeModal = () => {
+      modal.classList.remove('open')
+      document.body.style.overflow = ''
+      modal.setAttribute('aria-hidden', 'true')
+    }
+
+    document.getElementById('openBooking')?.addEventListener('click', openModal)
+    document.getElementById('ctaBookingBtn')?.addEventListener('click', openModal)
+    document.querySelectorAll('a[href="#booking"]').forEach(link =>
+      link.addEventListener('click', e => {
+        e.preventDefault()
+        openModal()
+      })
+    )
+    modal.querySelector('#closeBooking')?.addEventListener('click', closeModal)
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeModal()
+    })
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal()
+    })
+
+    // ---- state ----
+    const state = { service: '', dayLabel: '', dayDate: null as Date | null, time: '' }
+    const panels = modal.querySelectorAll<HTMLElement>('.mpanel')
+    const steps = modal.querySelectorAll<HTMLElement>('.mstep')
+    const bar = modal.querySelector<HTMLElement>('#mstepBar')
+
+    function showStep(step: number | 'done') {
+      panels.forEach(p => p.classList.remove('active'))
+      modal!.querySelector(`.mpanel[data-panel="${step}"]`)?.classList.add('active')
+      if (typeof step === 'number') {
+        steps.forEach(s => {
+          const n = Number(s.dataset.step)
+          s.classList.toggle('active', n === step)
+          s.classList.toggle('done', n < step)
+        })
+        if (bar) bar.style.width = `${step * 25}%`
+      }
+    }
+
+    // ---- step 1: services ----
+    modal.querySelectorAll<HTMLElement>('.mservice').forEach(b =>
+      b.addEventListener('click', () => {
+        modal!.querySelectorAll('.mservice').forEach(x => x.classList.remove('sel'))
+        b.classList.add('sel')
+        state.service = b.dataset.val || ''
+        ;(modal!.querySelector('#mnext1') as HTMLButtonElement).disabled = false
+      })
+    )
+
+    // ---- step 2: calendar ----
+    const grid = modal.querySelector<HTMLElement>('#mcalGrid')
+    const monthLabel = modal.querySelector<HTMLElement>('#mcalMonth')
+    const prevBtn = modal.querySelector<HTMLButtonElement>('#mcalPrev')
+    const nextBtn = modal.querySelector<HTMLButtonElement>('#mcalNext')
+    const dayBase =
+      'mcal-day grid aspect-square cursor-pointer place-items-center rounded-sm border border-transparent bg-transparent text-xs font-semibold text-text transition-all [font-variant-numeric:tabular-nums] hover:enabled:-translate-y-px hover:enabled:border-accent-border hover:enabled:bg-accent-subtle disabled:cursor-not-allowed disabled:line-through disabled:opacity-30 [&.today]:border-border-hi [&.sel]:!border-accent [&.sel]:!bg-accent [&.sel]:!text-white'
+    const monthNames = [
+      'Januar',
+      'Februar',
+      'Mart',
+      'April',
+      'Maj',
+      'Jun',
+      'Jul',
+      'Avgust',
+      'Septembar',
+      'Oktobar',
+      'Novembar',
+      'Decembar',
+    ]
+    const dayNames = ['Nedelja', 'Ponedeljak', 'Utorak', 'Sreda', 'Četvrtak', 'Petak', 'Subota']
+    const TUESDAY = 2
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    let view = new Date(today.getFullYear(), today.getMonth(), 1)
+
+    function renderCalendar() {
+      if (!grid || !monthLabel) return
+      grid.innerHTML = ''
+      monthLabel.textContent = `${monthNames[view.getMonth()]} ${view.getFullYear()}`
+      if (prevBtn)
+        prevBtn.disabled =
+          view.getFullYear() === today.getFullYear() && view.getMonth() === today.getMonth()
+
+      let firstDow = new Date(view.getFullYear(), view.getMonth(), 1).getDay()
+      firstDow = firstDow === 0 ? 6 : firstDow - 1
+      const daysInMonth = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate()
+
+      for (let i = 0; i < firstDow; i++) {
+        const e = document.createElement('div')
+        e.className = 'mcal-day empty aspect-square'
+        grid.appendChild(e)
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const date = new Date(view.getFullYear(), view.getMonth(), d)
+        date.setHours(0, 0, 0, 0)
+        const btn = document.createElement('button')
+        btn.type = 'button'
+        btn.className = dayBase
+        btn.textContent = String(d)
+        if (date.getTime() === today.getTime()) btn.classList.add('today')
+
+        const isPast = date < today
+        const isClosed = date.getDay() === TUESDAY
+        if (isPast || isClosed) {
+          btn.disabled = true
+        } else {
+          btn.addEventListener('click', () => {
+            grid.querySelectorAll('.mcal-day').forEach(x => x.classList.remove('sel'))
+            btn.classList.add('sel')
+            state.dayDate = date
+            state.dayLabel = `${dayNames[date.getDay()]}, ${d}. ${monthNames[view.getMonth()]} ${view.getFullYear()}.`
+            ;(modal!.querySelector('#mnext2') as HTMLButtonElement).disabled = false
+          })
+        }
+        if (state.dayDate && date.getTime() === state.dayDate.getTime()) btn.classList.add('sel')
+        grid.appendChild(btn)
+      }
+    }
+
+    prevBtn?.addEventListener('click', () => {
+      view = new Date(view.getFullYear(), view.getMonth() - 1, 1)
+      renderCalendar()
+    })
+    nextBtn?.addEventListener('click', () => {
+      view = new Date(view.getFullYear(), view.getMonth() + 1, 1)
+      renderCalendar()
+    })
+    renderCalendar()
+
+    // ---- step 3: time ----
+    modal.querySelectorAll<HTMLElement>('.mtime').forEach(b =>
+      b.addEventListener('click', () => {
+        modal!.querySelectorAll('.mtime').forEach(x => x.classList.remove('sel'))
+        b.classList.add('sel')
+        state.time = b.dataset.val || ''
+        ;(modal!.querySelector('#mnext3') as HTMLButtonElement).disabled = false
+      })
+    )
+
+    // ---- navigation ----
+    modal.querySelectorAll<HTMLElement>('.btn-modal-next, .btn-modal-back').forEach(b => {
+      b.addEventListener('click', () => {
+        const go = Number(b.dataset.go)
+        if (go === 3) {
+          const picked = modal!.querySelector('#mpickedDay')
+          if (picked) picked.innerHTML = `Izabran datum: <strong>${state.dayLabel}</strong>`
+        }
+        if (go === 4) {
+          const sum = modal!.querySelector('#mbooking-summary')
+          if (sum)
+            sum.innerHTML = `<strong style="color:var(--text)">Usluga:</strong> ${state.service}<br><strong style="color:var(--text)">Datum:</strong> ${state.dayLabel}<br><strong style="color:var(--text)">Vreme:</strong> ${state.time}<br><strong style="color:var(--text)">Salon:</strong> Candir, Bate Brkića 26`
+        }
+        showStep(go)
+      })
+    })
+
+    // ---- confirm ----
+    modal.querySelector('#mconfirm')?.addEventListener('click', () => {
+      const name = (modal!.querySelector('#mname') as HTMLInputElement).value.trim()
+      const phone = (modal!.querySelector('#mphone') as HTMLInputElement).value.trim()
+      if (!name || !phone) {
+        ;(modal!.querySelector('#mname') as HTMLInputElement).focus()
+        return
+      }
+      const txt = modal!.querySelector('#mdoneText')
+      if (txt)
+        txt.innerHTML = `Hvala, <strong>${name}</strong>! Termin je potvrđen za ${state.dayLabel} u ${state.time}. Pozvaćemo te na ${phone}.`
+      panels.forEach(p => p.classList.remove('active'))
+      modal!.querySelector('.mpanel[data-panel="done"]')?.classList.add('active')
+      steps.forEach(s => s.classList.add('done'))
+      if (bar) bar.style.width = '100%'
+    })
+
+    // ---- reset ----
+    modal.querySelector('#mreset')?.addEventListener('click', () => {
+      state.service = ''
+      state.dayLabel = ''
+      state.dayDate = null
+      state.time = ''
+      modal!.querySelectorAll('.sel').forEach(x => x.classList.remove('sel'))
+      ;(modal!.querySelector('#mnext1') as HTMLButtonElement).disabled = true
+      ;(modal!.querySelector('#mnext2') as HTMLButtonElement).disabled = true
+      ;(modal!.querySelector('#mnext3') as HTMLButtonElement).disabled = true
+      ;(modal!.querySelector('#mname') as HTMLInputElement).value = ''
+      ;(modal!.querySelector('#mphone') as HTMLInputElement).value = ''
+      steps.forEach(s => s.classList.remove('done', 'active'))
+      renderCalendar()
+      showStep(1)
+    })
+  }
+</script>

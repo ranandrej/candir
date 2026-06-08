@@ -1,0 +1,139 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   DESIGN TOKENS (Tailwind v4 @theme)
+   Mapira se u utility klase: bg-bg-raised, text-text-2,
+   border-border-hi, rounded-md, font-sans, itd.
+   ============================================================ */
+@theme {
+	--font-sans: 'DM Sans', -apple-system, 'Helvetica Neue', sans-serif;
+	--font-mono: 'DM Mono', 'SF Mono', monospace;
+
+	--color-bg: #0d0d0f;
+	--color-bg-raised: #111113;
+	--color-bg-elevated: #161618;
+	--color-surface: #1a1a1c;
+	--color-surface-hi: #212124;
+	--color-border: rgba(255, 255, 255, 0.08);
+	--color-border-hi: rgba(255, 255, 255, 0.14);
+
+	--color-text: #e8e8ed;
+	--color-text-2: #9898a6;
+	--color-text-3: #5c5c6b;
+
+	--color-accent: #ff6b35;
+	--color-accent-2: #ff8c5a;
+	--color-accent-subtle: rgba(255, 107, 53, 0.1);
+	--color-accent-border: rgba(255, 107, 53, 0.3);
+
+	--color-green: #22c55e;
+	--color-amber: #f59e0b;
+	--color-red: #ef4444;
+
+	--radius-sm: 8px;
+	--radius-md: 12px;
+	--radius-lg: 16px;
+	--radius-xl: 22px;
+}
+
+/* ============================================================
+   LEGACY ALIASI
+   Postojeći scoped CSS koristi --accent, --bg, --r-md, itd.
+   Ovi aliasi drže taj kod živim tokom postepene migracije.
+   ============================================================ */
+:root {
+	--bg: var(--color-bg);
+	--bg-raised: var(--color-bg-raised);
+	--bg-elevated: var(--color-bg-elevated);
+	--surface: var(--color-surface);
+	--surface-hi: var(--color-surface-hi);
+	--border: var(--color-border);
+	--border-hi: var(--color-border-hi);
+	--text: var(--color-text);
+	--text-2: var(--color-text-2);
+	--text-3: var(--color-text-3);
+	--accent: var(--color-accent);
+	--accent-2: var(--color-accent-2);
+	--accent-subtle: var(--color-accent-subtle);
+	--accent-border: var(--color-accent-border);
+	--green: var(--color-green);
+	--amber: var(--color-amber);
+	--red: var(--color-red);
+	--r-sm: var(--radius-sm);
+	--r-md: var(--radius-md);
+	--r-lg: var(--radius-lg);
+	--r-xl: var(--radius-xl);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+	}
+	body {
+		font-family: var(--font-sans);
+		background: var(--color-bg);
+		color: var(--color-text);
+		font-size: 15px;
+		line-height: 1.6;
+		overflow-x: hidden;
+	}
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+	::selection {
+		background: rgba(255, 107, 53, 0.32);
+		color: #fff;
+	}
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+}
+::-webkit-scrollbar-track {
+	background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+	background: var(--color-surface-hi);
+	border-radius: 10px;
+	border: 2px solid var(--color-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-accent);
+}
+
+/* keyframes koje koristi BookingModal preko animate-[...] utility klasa */
+@keyframes mpanelIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+@keyframes donePop {
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(1);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.001ms !important;
+		transition-duration: 0.001ms !important;
+		scroll-behavior: auto !important;
+	}
+}

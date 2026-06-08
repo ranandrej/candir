@@ -1,11 +1,1590 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from '../layouts/Layout.astro'
+import BookingModal from '../components/BookingModal.astro'
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const salon = {
+  name: 'Candir',
+  tagline: 'Frizerski salon',
+  city: 'Novi Sad',
+  address: 'Bate Brkića 26, 21000 Novi Sad',
+  phoneBooking: '+381 60 1997223',
+  phoneBookingHref: 'tel:+381601997223',
+  phoneEmergency: '+381 60 1997224',
+  phoneEmergencyHref: 'tel:+381601997224',
+  email: 'salon.candir@gmail.com',
+  instagram: 'https://instagram.com',
+  facebook: 'https://facebook.com',
+  tiktok: 'https://tiktok.com',
+}
+
+const radnoVreme = [
+  { dan: 'Ponedeljak', sati: '08:00 — 20:00', otvoreno: true },
+  { dan: 'Utorak', sati: 'Zatvoreno', otvoreno: false },
+  { dan: 'Sreda', sati: '08:00 — 20:00', otvoreno: true },
+  { dan: 'Četvrtak', sati: '08:00 — 20:00', otvoreno: true },
+  { dan: 'Petak', sati: '08:00 — 20:00', otvoreno: true },
+  { dan: 'Subota', sati: '08:00 — 20:00', otvoreno: true },
+  { dan: 'Nedelja', sati: '08:00 — 20:00', otvoreno: true },
+]
+
+const stats = [
+  { broj: '9.5', labela: 'Prosečna ocena', sufiks: '/10' },
+  { broj: '296', labela: 'Recenzija', sufiks: '+' },
+  { broj: '100', labela: 'Kvadrata prostora', sufiks: 'm²' },
+  { broj: '2', labela: 'Top Salon nagrade', sufiks: '×' },
+]
+
+const cenovnik = [
+  {
+    kat: 'Muškarci',
+    stavke: [
+      { ime: 'Muško šišanje', trajanje: '15 min', cena: '800', tag: 'popularno' },
+      { ime: 'Muško šišanje — fade', trajanje: '30 min', cena: '1.100', tag: 'popularno' },
+      { ime: 'Oblikovanje brade', trajanje: '15 min', cena: '400' },
+      { ime: 'Dečije šišanje — za dečake', trajanje: '45 min', cena: '1.000' },
+      { ime: 'Masaža glave — dodatak', trajanje: '15 min', cena: '800' },
+    ],
+  },
+  {
+    kat: 'Šišanje & feniranje',
+    stavke: [
+      { ime: 'Žensko šišanje + feniranje', trajanje: '60 min', cena: '2.000', tag: 'popularno' },
+      { ime: 'Curlycut (kovrdžava kosa)', trajanje: '60 min', cena: '1.500' },
+      { ime: 'Feniranje na ravno — duga kosa', trajanje: '45 min', cena: '1.200' },
+      { ime: 'Feniranje na lokne — duga kosa', trajanje: '45 min', cena: '1.300' },
+      {
+        ime: 'Akcija: Ampula + Masaža + Feniranje',
+        trajanje: '75 min',
+        cena: '1.500',
+        staraCena: '2.200',
+        tag: '-32%',
+      },
+    ],
+  },
+  {
+    kat: 'Farbanje',
+    stavke: [
+      { ime: 'Farbanje izrastka + feniranje', trajanje: '90 min', cena: '3.500', tag: 'popularno' },
+      { ime: 'Farbanje — duga kosa', trajanje: '70 min', cena: '7.000' },
+      { ime: 'Dekolorizacija — sve dužine', trajanje: '75 min', cena: '9.000' },
+      { ime: 'Dekolorizacija + novo farbanje', trajanje: '300 min', cena: '20.000' },
+      { ime: 'Blajhanje cele dužine — duga kosa', trajanje: '75 min', cena: '7.000' },
+    ],
+  },
+  {
+    kat: 'Pramenovi',
+    stavke: [
+      { ime: 'Balayage — sve dužine', trajanje: '90 min', cena: '15.000', tag: 'premium' },
+      { ime: 'Pramenovi Air Touch', trajanje: '150 min', cena: '14.000' },
+      { ime: 'Pramenovi Babylights', trajanje: '180 min', cena: '18.000' },
+      { ime: 'Pramenovi na foliju — duga kosa', trajanje: '90 min', cena: '9.000' },
+      { ime: 'Preliv — duga kosa', trajanje: '30 min', cena: '2.100' },
+    ],
+  },
+  {
+    kat: 'Nega kose',
+    stavke: [
+      { ime: 'Olaplex tretman — sve dužine', trajanje: '60 min', cena: '5.000', tag: 'popularno' },
+      { ime: 'Botoks tretman + stajling', trajanje: '60 min', cena: '4.500' },
+      { ime: 'Keratinsko ispravljanje — duga', trajanje: '100 min', cena: '7.500' },
+      { ime: 'K-luminacija tretman', trajanje: '75 min', cena: '3.500' },
+      { ime: 'Ampula za negu kose', trajanje: '15 min', cena: '600' },
+    ],
+  },
+  {
+    kat: 'Frizure',
+    stavke: [
+      { ime: 'Svečana frizura + tretman', trajanje: '120 min', cena: '6.000', tag: 'premium' },
+      { ime: 'Glamur lokne', trajanje: '90 min', cena: '4.000' },
+      { ime: 'Sirena talasi — sve dužine', trajanje: '60 min', cena: '2.000' },
+      { ime: 'Punđa — jednostavna', trajanje: '45 min', cena: '3.000' },
+      { ime: 'Afro lokne — duga kosa', trajanje: '60 min', cena: '2.000' },
+    ],
+  },
+]
+
+const bookingServices = [
+  { ime: 'Muško šišanje', cena: '800 RSD', trajanje: '15 min' },
+  { ime: 'Muško šišanje fade', cena: '1.100 RSD', trajanje: '30 min' },
+  { ime: 'Žensko šišanje + feniranje', cena: '2.000 RSD', trajanje: '60 min' },
+  { ime: 'Feniranje na ravno', cena: '1.200 RSD', trajanje: '45 min' },
+  { ime: 'Farbanje izrastka', cena: '3.500 RSD', trajanje: '90 min' },
+  { ime: 'Balayage', cena: '15.000 RSD', trajanje: '90 min' },
+  { ime: 'Olaplex tretman', cena: '5.000 RSD', trajanje: '60 min' },
+  { ime: 'Svečana frizura', cena: '6.000 RSD', trajanje: '120 min' },
+]
+
+const team = [
+  {
+    ime: 'Nebojša Milošević',
+    uloga: 'Vlasnik & Art Director',
+    opis: 'Modni frizer na Serbian Fashion Week 2021—2023. Specijalista za kolorizaciju i modne frizure.',
+    img: 'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=400&q=80',
+  },
+  {
+    ime: 'Jelena Radosav',
+    uloga: 'Senior frizer',
+    opis: 'Majstor preciznog šišanja i stilizovanja. Omiljena među klijentima zbog pažljivog pristupa.',
+    img: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=400&q=80',
+  },
+  {
+    ime: 'Milana',
+    uloga: 'Kolorista & stilista',
+    opis: 'Stručnjak za feniranje, talase i savremene tehnike bojenja kose.',
+    img: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=400&q=80',
+  },
+]
+
+const reviews = [
+  {
+    ime: 'Tijana B.',
+    usluga: 'Žensko šišanje + feniranje',
+    ocena: 10,
+    tekst:
+      'Sjajan salon, svi su predivni i profesionalni. Frizura urađena tačno po mojoj želji — prezadovoljna sam!',
+    frizer: 'Milana',
+  },
+  {
+    ime: 'Dimitrije',
+    usluga: 'Muško šišanje',
+    ocena: 10,
+    tekst:
+      'To što je Gordon Ramsay u kuhinji, to je ekipa u Candiru u frizerstvu. Lako zakazivanje i sjajna komunikacija. 10/10.',
+    frizer: 'Jelena Radosav',
+  },
+  {
+    ime: 'Simona B.',
+    usluga: 'Farbanje + pramenovi',
+    ocena: 10,
+    tekst:
+      'Savršeno ofarbana kosa u ledeno plavu nijansu, bez žutih tonova i bez oštećenja vlasi. Iskrena preporuka!',
+    frizer: 'Nebojša Milošević',
+  },
+  {
+    ime: 'Tamara B.',
+    usluga: 'Feniranje na ravno',
+    ocena: 10,
+    tekst:
+      'Lep i prijatan ambijent, usluga odlična. Brzo i efikasno, od zakazivanja do feniranja. Talasi savršeni.',
+    frizer: 'Jelena Radosav',
+  },
+]
+
+const blog = [
+  {
+    naslov: 'Kako produžiti trajanje balayage frizure',
+    kat: 'Saveti',
+    datum: '02. jun 2026.',
+    opis: 'Pravilna nega obojene kose može da produži sjaj i nijansu i do 3 meseca. Donosimo proverene trikove naših kolorista.',
+    img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    naslov: 'Trendovi muških frizura za 2026.',
+    kat: 'Trendovi',
+    datum: '28. maj 2026.',
+    opis: 'Od teksturiranog fade-a do klasične elegancije — pregled stilova koji dominiraju ove sezone.',
+    img: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    naslov: 'Olaplex: zašto ga svi pričaju?',
+    kat: 'Nega',
+    datum: '15. maj 2026.',
+    opis: 'Tretman koji obnavlja strukturu dlake na molekularnom nivou. Objašnjavamo kako radi i kome je namenjen.',
+    img: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=800&q=80',
+  },
+]
+
+const partners = [
+  { ime: 'Tigi', tip: 'Profesionalna kozmetika' },
+  { ime: 'Fanola', tip: 'Boje za kosu' },
+  { ime: 'AlterEgo', tip: 'Italijanska nega' },
+  { ime: 'Vaš brend', tip: 'Reklamni prostor', ad: true },
+]
+
+const navLinks = [
+  { href: '#usluge', label: 'Usluge' },
+  { href: '#booking', label: 'Zakazivanje' },
+  { href: '#cenovnik', label: 'Cenovnik' },
+  { href: '#recenzije', label: 'Recenzije' },
+  { href: '#blog', label: 'Blog' },
+  { href: '#o-nama', label: 'O nama' },
+]
 ---
 
 <Layout>
-	<Welcome />
+  <!-- ===================== NAV ===================== -->
+  <header
+    id="nav"
+    class="fixed inset-x-0 top-0 z-[100] border-b border-transparent py-3.5 transition-all duration-300 [&.scrolled]:border-border [&.scrolled]:bg-[rgba(13,13,15,0.85)] [&.scrolled]:py-2.5 [&.scrolled]:backdrop-blur-xl">
+    <div class="mx-auto flex w-[min(1160px,92vw)] items-center justify-between gap-4">
+      <a href="#top" aria-label="Candir" class="group inline-flex shrink-0 items-center gap-[9px]">
+        <span
+          class="grid h-[30px] w-[30px] shrink-0 place-items-center rounded-lg bg-accent transition-transform duration-300 group-hover:-rotate-[8deg]">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8C1.5 11.59 4.41 14.5 8 14.5C11.59 14.5 14.5 11.59 14.5 8"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"></path>
+            <path
+              d="M11 4L14.5 4L14.5 7.5"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <path d="M14.5 4L9 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round"></path>
+          </svg>
+        </span>
+        <span class="font-sans text-[15px] font-bold tracking-[0.12em] text-text">CANDIR</span>
+      </a>
+
+      <nav
+        id="navLinks"
+        class="flex ml-auto gap-0.5 max-md:fixed max-md:inset-x-0 max-md:bottom-0 max-md:top-[58px] max-md:z-[99] max-md:invisible max-md:-translate-y-4 max-md:flex-col max-md:border-b max-md:border-border max-md:bg-black max-md:px-[5vw] max-md:pb-5 max-md:pt-3.5 max-md:opacity-0 max-md:backdrop-blur-xl max-md:transition-all max-md:duration-300 max-md:[&.open]:visible max-md:[&.open]:translate-y-0 max-md:[&.open]:opacity-100">
+        {
+          navLinks.map(l => (
+            <a
+              href={l.href}
+              class="rounded-lg px-3 py-[7px] text-[13.5px] font-medium text-text-2 transition-colors hover:bg-surface hover:text-text max-md:px-4 max-md:py-[13px] max-md:text-base">
+              {l.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="ml-3 flex items-center gap-2">
+        <a
+          href={salon.phoneBookingHref}
+          title="Pozovi"
+          class="flex items-center gap-[7px] rounded-lg border border-border px-3 py-[7px] text-[13px] text-text-2 transition-colors hover:border-border-hi hover:bg-surface hover:text-text">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8">
+            <path
+              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.81.37 1.6.72 2.34a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.74-1.01a2 2 0 0 1 2.11-.45c.74.35 1.53.6 2.34.72A2 2 0 0 1 22 16.92z"
+            ></path>
+          </svg>
+          <span class="hidden min-[1080px]:block">{salon.phoneBooking}</span>
+        </a>
+        <a
+          href="#booking"
+          class="inline-flex items-center gap-[7px] whitespace-nowrap rounded-lg bg-accent px-4 py-2 text-[13.5px] font-semibold text-white transition hover:-translate-y-px hover:bg-accent-2 max-md:hidden">
+          Zakaži termin
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg
+          >
+        </a>
+        <button
+          id="burger"
+          aria-label="Meni"
+          class="group hidden cursor-pointer flex-col gap-[5px] rounded-lg border border-border p-[9px] max-md:flex">
+          <span
+            class="block h-[1.5px] w-[18px] rounded-sm bg-text-2 transition-all duration-300 group-[.open]:translate-y-[6.5px] group-[.open]:rotate-45"
+          ></span>
+          <span
+            class="block h-[1.5px] w-[18px] rounded-sm bg-text-2 transition-all duration-300 group-[.open]:opacity-0"
+          ></span>
+          <span
+            class="block h-[1.5px] w-[18px] rounded-sm bg-text-2 transition-all duration-300 group-[.open]:-translate-y-[6.5px] group-[.open]:-rotate-45"
+          ></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ===================== HERO ===================== -->
+    <section class="relative pt-[140px] pb-[60px] max-md:pt-24 max-[480px]:pt-[88px]">
+      <div class="container grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-[60px]">
+        <div>
+          <div
+            class="reveal inline-flex items-center gap-2 rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[12.5px] font-medium text-text-2"
+            data-d="0">
+            <span class="badge-live"></span>
+            Top Salon 2021 & 2022 · Novi Sad
+          </div>
+
+          <h1
+            class="reveal mt-[22px] text-[clamp(48px,7vw,80px)] font-extrabold leading-none tracking-[-0.03em] text-text max-[480px]:text-[clamp(38px,12vw,50px)]"
+            data-d="1">
+            Tvoja<br />
+            <em class="italic text-accent">savršena</em><br />
+            frizura.
+          </h1>
+
+          <p
+            class="reveal mt-[22px] max-w-[440px] text-base leading-[1.65] text-text-2 max-[480px]:text-[15px]"
+            data-d="2">
+            Premium frizerski salon u srcu Novog Sada. Vrhunska usluga, savremene tehnike i online
+            zakazivanje — u par klikova, 24/7.
+          </p>
+
+          <div class="reveal mt-8 flex flex-wrap gap-2.5 max-[480px]:gap-2" data-d="3">
+            <a
+              href="#booking"
+              class="btn-primary max-md:flex-1 max-md:justify-center max-[480px]:w-full">
+              Zakaži termin
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg
+              >
+            </a>
+            <a
+              href={salon.phoneBookingHref}
+              class="btn-secondary max-md:flex-1 max-md:justify-center max-[480px]:w-full">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.81.37 1.6.72 2.34a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.74-1.01a2 2 0 0 1 2.11-.45c.74.35 1.53.6 2.34.72A2 2 0 0 1 22 16.92z"
+                ></path>
+              </svg>
+              {salon.phoneBooking}
+            </a>
+          </div>
+
+          <div class="reveal mt-6 flex items-center gap-2.5" data-d="4">
+            <div class="flex gap-0.5">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="#f59e0b"
+                xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                ></path></svg
+              >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="#f59e0b"
+                xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                ></path></svg
+              >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="#f59e0b"
+                xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                ></path></svg
+              >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="#f59e0b"
+                xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                ></path></svg
+              >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="#f59e0b"
+                xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                ></path></svg
+              >
+            </div>
+            <span class="text-[13px] text-text-2"
+              ><strong class="text-text">9.5/10</strong> · 296 recenzija</span
+            >
+          </div>
+        </div>
+
+        <div class="reveal order-first lg:order-none" data-d="2">
+          <!-- ZAMENI src sa pravom slikom salona -->
+          <div
+            class="group relative overflow-hidden rounded-[var(--r-xl)] border border-border shadow-[0_40px_80px_-20px_rgba(0,0,0,0.7)]">
+            <img
+              src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=900&q=90"
+              alt="Enterijer salona Candir — Novi Sad"
+              class="block h-[520px] w-full object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.03] max-lg:h-[380px] max-md:h-[340px] max-[480px]:h-[280px]"
+              loading="eager"
+              width="900"
+              height="600"
+            />
+            <div
+              class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,rgba(13,13,15,0.6))]">
+            </div>
+
+            <div class="floating-card fc-top">
+              <div class="fc-dot"></div>
+              <div class="fc-text">
+                <span class="fc-label">Slobodni termini</span>
+                <span class="fc-value">4 dostupna danas</span>
+              </div>
+            </div>
+
+            <div class="floating-card fc-bottom">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#22c55e"
+                stroke-width="2"><path d="M20 6L9 17l-5-5"></path></svg
+              >
+              <div class="fc-text">
+                <span class="fc-label">Instant potvrda</span>
+                <span class="fc-value">bez čekanja na poziv</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- stats bar -->
+      <div class="reveal mt-14" data-d="4">
+        <div
+          class="container flex items-center rounded-lg border border-border bg-bg-elevated px-8 py-6 max-md:flex-wrap max-md:gap-3 max-md:p-5">
+          {
+            stats.map((s, i) => (
+              <>
+                <div class="flex-1 text-center max-md:flex-[1_1_calc(50%-6px)]">
+                  <div
+                    class="text-[clamp(26px,3.5vw,38px)] font-extrabold tracking-[-0.02em] text-text"
+                    data-count={s.broj}>
+                    {s.broj}
+                    <span class="text-accent" data-suf>
+                      {s.sufiks}
+                    </span>
+                  </div>
+                  <div class="mt-[3px] text-[12.5px] font-medium text-text-3">{s.labela}</div>
+                </div>
+                {i < stats.length - 1 && (
+                  <div class="h-9 w-px shrink-0 bg-border max-md:hidden" aria-hidden="true" />
+                )}
+              </>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== USLUGE ===================== -->
+    <section class="section" id="usluge">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow-tag">Naše usluge</div>
+          <h2 class="section-title">Sve za tvoj savršen izgled</h2>
+          <p class="section-desc">
+            Od svakodnevnog šišanja do kompleksnih kolorizacija — tim koristi tehnike i brendove
+            Tigi, Fanola i AlterEgo.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3.5 max-lg:grid-cols-2 max-md:grid-cols-1">
+          {
+            [
+              {
+                icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3v18M18 3v18M6 12h12"/></svg>`,
+                t: 'Šišanje & styling',
+                d: 'Muško, žensko i dečije šišanje, fade, curlycut i precizno oblikovanje.',
+              },
+              {
+                icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>`,
+                t: 'Farbanje & kolor',
+                d: 'Farbanje, blajhanje, dekolorizacija — bez nepotrebnog oštećenja kose.',
+              },
+              {
+                icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+                t: 'Pramenovi',
+                d: 'Balayage, Air Touch, Babylights — tehnike koje stvaraju dubinu i sjaj.',
+              },
+              {
+                icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s-8-4-8-10V7l8-5 8 5v5c0 6-8 10-8 10z"/><path d="M12 12v.01M8 14l4-2 4 2"/></svg>`,
+                t: 'Nega kose',
+                d: 'Olaplex, keratin, botoks i tretmani koji obnavljaju strukturu vlasi.',
+              },
+              {
+                icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM4 20a8 8 0 0 1 16 0"/></svg>`,
+                t: 'Svečane frizure',
+                d: 'Frizure za venčanja i posebne prilike koje traju ceo dan.',
+              },
+              {
+                icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>`,
+                t: 'Brada & berber',
+                d: 'Oblikovanje brade i kompletan berberski tretman.',
+              },
+            ].map(c => (
+              <article class="group reveal relative overflow-hidden rounded-lg border border-border bg-bg-raised p-6 transition-all duration-[250ms] hover:-translate-y-[3px] hover:border-border-hi hover:bg-bg-elevated before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-[linear-gradient(90deg,transparent,var(--color-accent-border),transparent)] before:opacity-0 before:transition-opacity before:content-[''] hover:before:opacity-100 max-[480px]:p-5">
+                <div
+                  class="mb-4 grid h-10 w-10 place-items-center rounded-sm border border-border bg-surface text-accent"
+                  set:html={c.icon}
+                />
+                <h3 class="mb-2 text-base font-bold text-text">{c.t}</h3>
+                <p class="text-sm leading-[1.55] text-text-2">{c.d}</p>
+                <a
+                  href="#cenovnik"
+                  class="mt-4 inline-flex items-center gap-[5px] text-[13px] font-semibold text-accent transition-all group-hover:gap-2">
+                  Pogledaj cene
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== GALERIJA ===================== -->
+    <section class="pt-10 pb-20">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow-tag">Naš rad</div>
+          <h2 class="section-title">Galerija radova</h2>
+          <p class="section-desc">Zameni ove slike sa pravim fotografijama iz salona</p>
+        </div>
+      </div>
+      <div
+        class="flex gap-3 overflow-x-auto px-[calc((100vw-min(1160px,92vw))/2)] py-5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        {/* ZAMENI ove src linkove sa pravim fotografijama radova */}
+        {
+          [
+            {
+              src: 'https://images.unsplash.com/photo-1560869713-7d0a29430803?auto=format&fit=crop&w=600&q=80',
+              t: 'Balayage',
+            },
+            {
+              src: 'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=600&q=80',
+              t: 'Muški fade',
+            },
+            {
+              src: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80',
+              t: 'Styling',
+            },
+            {
+              src: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=600&q=80',
+              t: 'Lokne',
+            },
+            {
+              src: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=600&q=80',
+              t: 'Farbanje',
+            },
+            {
+              src: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=600&q=80',
+              t: 'Pramenovi',
+            },
+          ].map(g => (
+            <div class="group relative h-[360px] w-[280px] shrink-0 cursor-pointer overflow-hidden rounded-lg border border-border">
+              <img
+                src={g.src}
+                alt="Rad iz salona"
+                loading="lazy"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div class="absolute inset-0 flex items-end bg-[linear-gradient(180deg,transparent_50%,rgba(13,13,15,0.85))] px-4 py-[18px] opacity-0 transition-opacity group-hover:opacity-100">
+                <span class="text-[13px] font-semibold text-white">{g.t}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ===================== BOOKING MODAL TRIGGER ===================== -->
+    <section class="section border-y border-border bg-bg-raised" id="booking">
+      <div class="container">
+        <div class="grid grid-cols-2 items-center gap-[60px] max-lg:grid-cols-1">
+          <div class="reveal">
+            <div class="eyebrow-tag">Online zakazivanje</div>
+            <h2 class="section-title">Zakaži termin za 30 sekundi</h2>
+            <p class="section-desc max-w-[440px] text-left">
+              Bez pozivanja i čekanja na liniji. Izaberi uslugu, dan i vreme — potvrda stiže odmah.
+              Dostupno 24/7.
+            </p>
+
+            <ul class="mt-6 grid list-none gap-[11px] p-0">
+              <li class="flex items-center gap-2.5 text-[14.5px] text-text-2">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#22c55e"
+                  stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg
+                >
+                Instant potvrda termina
+              </li>
+              <li class="flex items-center gap-2.5 text-[14.5px] text-text-2">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#22c55e"
+                  stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg
+                >
+                Podsetnik putem SMS-a
+              </li>
+              <li class="flex items-center gap-2.5 text-[14.5px] text-text-2">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#22c55e"
+                  stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg
+                >
+                Besplatno otkazivanje do 24h ranije
+              </li>
+              <li class="flex items-center gap-2.5 text-[14.5px] text-text-2">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#22c55e"
+                  stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg
+                >
+                Plaćanje karticom ili gotovinom
+              </li>
+            </ul>
+
+            <button class="btn-primary btn-xl mt-8" id="openBooking">
+              Zakaži termin
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg
+              >
+            </button>
+
+            <p class="mt-3.5 text-[13.5px] text-text-3">
+              Ili pozovi direktno:
+              <a
+                href={salon.phoneBookingHref}
+                class="text-text-2 underline underline-offset-2 transition-colors hover:text-text"
+                >{salon.phoneBooking}</a
+              >
+            </p>
+          </div>
+
+          <div class="reveal max-lg:hidden" data-d="2">
+            <!-- ZAMENI ovim sa stvarnom slikom enterijera salona -->
+            <div
+              class="relative overflow-hidden rounded-xl border border-border shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]">
+              <img
+                src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=700&q=85"
+                alt="Enterijer salona Candir"
+                loading="lazy"
+                width="700"
+                height="500"
+                class="h-[400px] w-full object-cover"
+              />
+              <div
+                class="absolute bottom-[18px] left-[18px] flex items-center gap-2 rounded-full border border-border-hi bg-[rgba(13,13,15,0.88)] px-3.5 py-2 text-[13px] font-semibold text-text backdrop-blur-md">
+                <span
+                  class="h-[7px] w-[7px] rounded-full bg-green shadow-[0_0_6px_rgba(34,197,94,0.7)]"
+                ></span>
+                Sada otvoreno
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BOOKING MODAL (komponenta) ===================== -->
+    <BookingModal services={bookingServices} />
+
+    <!-- ===================== CENOVNIK ===================== -->
+    <section class="section" id="cenovnik">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow-tag">Cenovnik</div>
+          <h2 class="section-title">Transparentne cene, bez iznenađenja</h2>
+          <p class="section-desc">Izaberi kategoriju. Finalna cena zavisi od dužine i tipa kose.</p>
+        </div>
+
+        <div class="reveal mb-8 flex flex-wrap justify-center gap-1.5" id="priceTabs">
+          {
+            cenovnik.map((c, i) => (
+              <button class={`ptab ${i === 0 ? 'active' : ''}`} data-tab={i}>
+                {c.kat}
+              </button>
+            ))
+          }
+        </div>
+
+        <div class="mx-auto max-w-[800px]">
+          {
+            cenovnik.map((c, i) => (
+              <div class={`ppanel ${i === 0 ? 'active' : ''}`} data-panel={i}>
+                {c.stavke.map(s => (
+                  <div class="reveal mb-2 flex items-center justify-between gap-4 rounded-md border border-border bg-bg-raised px-[18px] py-4 transition-all hover:translate-x-1 hover:border-border-hi hover:bg-bg-elevated max-[480px]:p-3.5">
+                    <div>
+                      <span class="flex flex-wrap items-center gap-[7px] text-[15px] font-semibold text-text max-[480px]:text-sm">
+                        {s.ime}
+                        {s.tag && (
+                          <span
+                            class={`inline-flex rounded-[4px] border px-[7px] py-0.5 text-[10px] font-bold uppercase tracking-[0.05em] ${s.tag.includes('%') ? 'border-[rgba(34,197,94,0.3)] bg-[rgba(34,197,94,0.1)] text-green' : s.tag === 'premium' ? 'border-[rgba(168,85,247,0.3)] bg-[rgba(168,85,247,0.1)] text-[#a855f7]' : 'border-accent-border bg-accent-subtle text-accent'}`}>
+                            {s.tag}
+                          </span>
+                        )}
+                      </span>
+                      <span class="mt-1 flex items-center gap-1 text-xs text-text-3">
+                        <svg
+                          width="11"
+                          height="11"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2">
+                          <circle cx="12" cy="12" r="10" />
+                          <path d="M12 6v6l4 2" />
+                        </svg>
+                        {s.trajanje}
+                      </span>
+                    </div>
+                    <div class="flex shrink-0 items-center gap-2">
+                      {s.staraCena && (
+                        <span class="text-[13px] text-text-3 line-through">{s.staraCena}</span>
+                      )}
+                      <span class="text-[17px] font-bold text-text [font-variant-numeric:tabular-nums]">
+                        {s.cena} <small class="text-xs font-normal text-text-3">RSD</small>
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== RECENZIJE ===================== -->
+    <section class="section" id="recenzije">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow-tag">Recenzije</div>
+          <h2 class="section-title">Šta kažu naši klijenti</h2>
+          <p class="section-desc">9.5/10 na osnovu 296 nezavisnih utisaka.</p>
+        </div>
+        <div class="grid grid-cols-2 gap-3.5 max-md:grid-cols-1">
+          {
+            reviews.map(r => (
+              <article class="reveal rounded-lg border border-border bg-bg-raised p-6 transition-all duration-[250ms] hover:-translate-y-[3px] hover:border-border-hi">
+                <div class="mb-3.5 flex items-center justify-between">
+                  <div class="flex gap-0.5">
+                    {[1, 2, 3, 4, 5].map(() => (
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <span class="rounded-full border border-accent-border bg-accent-subtle px-[9px] py-[3px] text-xs font-bold text-accent">
+                    {r.ocena}/10
+                  </span>
+                </div>
+                <blockquote class="text-[15px] not-italic leading-[1.65] text-text-2">
+                  „{r.tekst}"
+                </blockquote>
+                <div class="mt-[18px] flex items-center gap-3">
+                  <div class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-full bg-accent text-sm font-bold text-white">
+                    {r.ime.charAt(0)}
+                  </div>
+                  <div>
+                    <strong class="block text-sm font-bold text-text">{r.ime}</strong>
+                    <span class="mt-0.5 block text-xs text-text-3">
+                      {r.usluga} · {r.frizer}
+                    </span>
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== RADNO VREME + KONTAKT ===================== -->
+    <section class="section" id="kontakt">
+      <div class="container grid grid-cols-[1.1fr_0.9fr] items-start gap-6 max-md:grid-cols-1">
+        <div class="reveal rounded-xl border border-border bg-bg-raised p-8">
+          <div class="eyebrow-tag">Radno vreme</div>
+          <h2 class="section-title mt-3 !text-[clamp(26px,3.5vw,38px)]">Kad smo otvoreni</h2>
+          <ul class="mt-6 list-none p-0">
+            {
+              radnoVreme.map(r => (
+                <li class="flex items-center justify-between border-b border-border py-[13px] text-[14.5px] last:border-b-0">
+                  <span class={`font-semibold ${r.otvoreno ? 'text-text' : 'text-text-3'}`}>
+                    {r.dan}
+                  </span>
+                  <span class={r.otvoreno ? 'font-semibold text-green' : 'text-text-3'}>
+                    {r.sati}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="grid gap-2.5">
+          <a
+            href={salon.phoneBookingHref}
+            class="reveal group flex items-center gap-3.5 rounded-lg border border-border bg-bg-raised px-5 py-[18px] transition-all hover:-translate-y-0.5 hover:border-border-hi">
+            <div
+              class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-sm border border-border bg-surface text-text-2">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.81.37 1.6.72 2.34a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.74-1.01a2 2 0 0 1 2.11-.45c.74.35 1.53.6 2.34.72A2 2 0 0 1 22 16.92z"
+                ></path>
+              </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+              <span class="mb-[3px] block text-[11.5px] text-text-3">Zakazivanje termina</span>
+              <strong class="block text-base font-bold text-text">{salon.phoneBooking}</strong>
+              <span class="mt-0.5 block text-xs text-text-3">Pon—Ned · 08—20h</span>
+            </div>
+            <svg
+              class="shrink-0 text-text-3"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg
+            >
+          </a>
+
+          <a
+            href={salon.phoneEmergencyHref}
+            class="reveal group flex items-center gap-3.5 rounded-lg border border-[rgba(239,68,68,0.2)] bg-bg-raised px-5 py-[18px] transition-all hover:-translate-y-0.5 hover:border-[rgba(239,68,68,0.4)]">
+            <div
+              class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-sm border border-border bg-surface text-red">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7">
+                <path
+                  d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                ></path><line x1="12" y1="9" x2="12" y2="13"></line><line
+                  x1="12"
+                  y1="17"
+                  x2="12.01"
+                  y2="17"></line>
+              </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+              <span class="mb-[3px] block text-[11.5px] text-text-3">Hitan kontakt (24/7)</span>
+              <strong class="block text-base font-bold text-red">{salon.phoneEmergency}</strong>
+              <span class="mt-0.5 block text-xs text-text-3">Poplava, požar, hitni slučajevi</span>
+            </div>
+            <svg
+              class="shrink-0 text-text-3"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg
+            >
+          </a>
+
+          <div
+            class="reveal flex items-center gap-3.5 rounded-lg border border-border bg-bg-raised px-5 py-[18px]">
+            <div
+              class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-sm border border-border bg-surface text-text-2">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle
+                  cx="12"
+                  cy="10"
+                  r="3"></circle>
+              </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+              <span class="mb-[3px] block text-[11.5px] text-text-3">Adresa salona</span>
+              <strong class="block text-base font-bold text-text">{salon.address}</strong>
+              <span class="mt-0.5 block text-xs text-text-3">Besplatan obezbeđen parking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BLOG ===================== -->
+    <section class="section" id="blog">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow-tag">Blog</div>
+          <h2 class="section-title">Saveti i trendovi</h2>
+          <p class="section-desc">Najnovije iz sveta frizerstva.</p>
+        </div>
+        <div class="grid grid-cols-3 gap-3.5 max-md:grid-cols-1">
+          {
+            blog.map(b => (
+              <article class="group reveal overflow-hidden rounded-lg border border-border bg-bg-raised transition-all duration-[250ms] hover:-translate-y-[3px] hover:border-border-hi">
+                {/* ZAMENI sa pravim fotografijama za blog postove */}
+                <div class="relative h-[190px] overflow-hidden">
+                  <img
+                    src={b.img}
+                    alt={b.naslov}
+                    loading="lazy"
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  />
+                  <span class="absolute left-3 top-3 rounded-full border border-border-hi bg-[rgba(13,13,15,0.8)] px-2.5 py-1 text-[11px] font-semibold text-text backdrop-blur-sm">
+                    {b.kat}
+                  </span>
+                </div>
+                <div class="p-5">
+                  <time class="text-xs text-text-3">{b.datum}</time>
+                  <h3 class="mt-2 mb-[9px] text-base font-bold leading-[1.3] text-text">
+                    {b.naslov}
+                  </h3>
+                  <p class="text-[13.5px] leading-[1.55] text-text-2">{b.opis}</p>
+                  <span class="mt-3.5 inline-flex items-center gap-[5px] text-[13px] font-semibold text-accent transition-all group-hover:gap-2">
+                    Pročitaj više
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PARTNERI ===================== -->
+    <section class="section" id="partneri">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow-tag">Partneri</div>
+          <h2 class="section-title">Brendovi kojima verujemo</h2>
+        </div>
+        <div class="grid grid-cols-4 gap-3 max-md:grid-cols-2">
+          {
+            partners.map(p => (
+              <div
+                class={`reveal relative rounded-lg border bg-bg-raised px-5 py-7 text-center transition-all hover:-translate-y-0.5 hover:border-border-hi ${p.ad ? 'border-dashed border-accent-border' : 'border-border'}`}>
+                {p.ad && (
+                  <span class="absolute right-2.5 top-2.5 rounded-[4px] bg-accent px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-[0.08em] text-white">
+                    Reklama
+                  </span>
+                )}
+                <strong class="block text-xl font-extrabold tracking-[-0.01em] text-text">
+                  {p.ime}
+                </strong>
+                <span class="mt-[5px] block text-[12.5px] text-text-3">{p.tip}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== O NAMA ===================== -->
+    <section class="section" id="o-nama">
+      <div
+        class="container grid grid-cols-2 items-start gap-[60px] max-lg:grid-cols-1 max-lg:gap-10">
+        <div class="reveal">
+          <div class="eyebrow-tag">O nama</div>
+          <h2 class="section-title mt-3">Priča o salonu Candir</h2>
+          <p class="mt-4 text-[15.5px] leading-[1.7] text-text-2">
+            Salon je počeo sa radom u avgustu 2020. godine u Rumenačkoj ulici u Novom Sadu. Tokom
+            godina razvili smo široku ponudu — od šišanja i stilizovanja, preko tretmana za oporavak
+            kose, do kolorizacije i korekcije boje.
+          </p>
+          <p class="mt-4 text-[15.5px] leading-[1.7] text-text-2">
+            Godine 2024. selimo se na novu adresu u Bate Brkića 26, u savremeni prostor od 100m² sa
+            besplatnim parkingom. U saradnji sa frizerskim školama nudimo i obuku pod mentorstvom
+            iskusnih i nagrađivanih frizera.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span
+              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[12.5px] text-text-2"
+              >Top Salon 2021</span
+            >
+            <span
+              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[12.5px] text-text-2"
+              >Top Salon 2022</span
+            >
+            <span
+              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[12.5px] text-text-2"
+              >Serbian Fashion Week</span
+            >
+            <span
+              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[12.5px] text-text-2"
+              >AlterEgo akademija</span
+            >
+          </div>
+        </div>
+
+        <div class="grid gap-2.5">
+          {
+            team.map(m => (
+              <article class="group reveal flex gap-4 rounded-lg border border-border bg-bg-raised p-3.5 transition-all duration-[250ms] hover:translate-x-1 hover:border-border-hi">
+                {/* ZAMENI sa pravim slikama tima */}
+                <div class="h-[76px] w-[76px] shrink-0 overflow-hidden rounded-md border border-border">
+                  <img src={m.img} alt={m.ime} loading="lazy" class="h-full w-full object-cover" />
+                </div>
+                <div class="flex-1">
+                  <strong class="text-[15px] font-bold text-text">{m.ime}</strong>
+                  <span class="mt-[3px] mb-[7px] block text-xs font-semibold text-accent">
+                    {m.uloga}
+                  </span>
+                  <p class="text-[13px] leading-[1.5] text-text-2">{m.opis}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- CTA banner -->
+      <div class="container">
+        <div
+          class="reveal mt-12 flex items-center justify-between gap-6 rounded-xl border border-border-hi bg-bg-elevated px-10 py-9 max-md:flex-col max-md:px-6 max-md:py-7 max-md:text-center max-[480px]:px-[18px] max-[480px]:py-6">
+          <div>
+            <h2 class="text-[clamp(22px,3vw,32px)] font-extrabold tracking-[-0.02em]">
+              Spremni za novu frizuru?
+            </h2>
+            <p class="mt-1.5 text-[15px] text-text-2">
+              Rezerviši termin online — instant potvrda, 24/7.
+            </p>
+          </div>
+          <button class="btn-primary btn-xl" id="ctaBookingBtn">
+            Zakaži termin
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg
+            >
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="border-t border-border bg-bg-raised pb-7 pt-14">
+    <div class="container grid grid-cols-[1.3fr_2fr] gap-[50px] max-md:grid-cols-1 max-md:gap-8">
+      <div>
+        <a href="#top" aria-label="Candir" class="inline-flex items-center gap-[9px]">
+          <span class="grid h-[30px] w-[30px] shrink-0 place-items-center rounded-lg bg-accent">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"
+              ><path
+                d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8C1.5 11.59 4.41 14.5 8 14.5C11.59 14.5 14.5 11.59 14.5 8"
+                stroke="white"
+                stroke-width="1.5"
+                stroke-linecap="round"></path><path
+                d="M11 4L14.5 4L14.5 7.5"
+                stroke="white"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path><path
+                d="M14.5 4L9 9.5"
+                stroke="white"
+                stroke-width="1.5"
+                stroke-linecap="round"></path></svg
+            >
+          </span>
+          <span class="font-sans text-[15px] font-bold tracking-[0.12em] text-text">CANDIR</span>
+        </a>
+        <p class="mb-[18px] mt-3.5 text-[13.5px] leading-[1.6] text-text-3">
+          Premium frizerski salon u Novom Sadu.<br />Bate Brkića 26.
+        </p>
+        <div
+          class="flex gap-2 [&>a]:grid [&>a]:h-[34px] [&>a]:w-[34px] [&>a]:place-items-center [&>a]:rounded-sm [&>a]:border [&>a]:border-border [&>a]:bg-surface [&>a]:text-text-3 [&>a]:transition-colors [&>a:hover]:border-border-hi [&>a:hover]:bg-surface-hi [&>a:hover]:text-text">
+          <a href={salon.instagram} aria-label="Instagram">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              ><rect x="2" y="2" width="20" height="20" rx="5"></rect><path
+                d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line
+                x1="17.5"
+                y1="6.5"
+                x2="17.51"
+                y2="6.5"></line></svg
+            >
+          </a>
+          <a href={salon.facebook} aria-label="Facebook">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              ><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+              ></path></svg
+            >
+          </a>
+          <a href={salon.tiktok} aria-label="TikTok">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg
+            >
+          </a>
+        </div>
+      </div>
+
+      <div
+        class="grid grid-cols-3 gap-[30px] max-md:grid-cols-2 max-[480px]:grid-cols-1 [&_a]:block [&_a]:py-1 [&_a]:text-[13.5px] [&_a]:text-text-3 [&_a]:transition-colors [&_a:hover]:text-text">
+        <div>
+          <h4 class="mb-3.5 text-[13px] font-bold tracking-[0.04em] text-text">Salon</h4>
+          <a href="#usluge">Usluge</a>
+          <a href="#cenovnik">Cenovnik</a>
+          <a href="#recenzije">Recenzije</a>
+          <a href="#o-nama">O nama</a>
+        </div>
+        <div>
+          <h4 class="mb-3.5 text-[13px] font-bold tracking-[0.04em] text-text">Resursi</h4>
+          <a href="#blog">Blog</a>
+          <a href="#booking">Zakazivanje</a>
+          <a href="#">Uslovi korišćenja</a>
+          <a href="#">Politika privatnosti</a>
+        </div>
+        <div>
+          <h4 class="mb-3.5 text-[13px] font-bold tracking-[0.04em] text-text">Kontakt</h4>
+          <a href={salon.phoneBookingHref}>{salon.phoneBooking}</a>
+          <a href={`mailto:${salon.email}`}>{salon.email}</a>
+          <a href="#kontakt">{salon.address}</a>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="container mt-10 flex flex-wrap justify-between gap-4 border-t border-border pt-[22px] text-[12.5px] text-text-3">
+      <span>© 2026 Salon Candir · Nebojša Milošević</span>
+      <span>Novi Sad, Srbija</span>
+    </div>
+  </footer>
 </Layout>
+
+<style>
+  /* ============================================================
+   Dizajn tokeni, fontovi i base reset su u src/styles/global.css
+   (Tailwind v4 @theme). Ovde ostaju samo stilovi specifični za
+   ovu stranicu — postepeno se prebacuju na Tailwind utility klase.
+   ============================================================ */
+  .container {
+    width: min(1160px, 92vw);
+    margin: 0 auto;
+  }
+
+  /* ============================================================
+   REVEAL ANIMATIONS
+   ============================================================ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ============================================================
+   BUTTONS
+   ============================================================ */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--r-md);
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+    white-space: nowrap;
+  }
+  .btn-primary:hover {
+    background: var(--accent-2);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -8px rgba(255, 107, 53, 0.5);
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+  .btn-primary.btn-xl {
+    padding: 13px 24px;
+    font-size: 15px;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid var(--border-hi);
+    border-radius: var(--r-md);
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      background 0.2s,
+      transform 0.2s;
+  }
+  .btn-secondary:hover {
+    border-color: var(--border-hi);
+    background: var(--surface);
+    transform: translateY(-1px);
+  }
+
+  /* ============================================================
+   HERO
+   ============================================================ */
+  .badge-live {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+    animation: livepulse 2s infinite;
+  }
+  @keyframes livepulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 5px rgba(34, 197, 94, 0);
+    }
+  }
+
+  .floating-card {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 15px;
+    background: rgba(13, 13, 15, 0.82);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border-hi);
+    border-radius: var(--r-md);
+    box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.7);
+  }
+  .fc-top {
+    top: 22px;
+    left: -20px;
+    animation: fcbob 5s ease-in-out infinite;
+  }
+  .fc-bottom {
+    bottom: 24px;
+    right: -16px;
+    animation: fcbob 6s ease-in-out infinite 0.4s;
+  }
+  @keyframes fcbob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  .fc-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(255, 107, 53, 0.7);
+  }
+  .fc-label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-3);
+    font-weight: 500;
+  }
+  .fc-value {
+    display: block;
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* ============================================================
+   SECTION BASE
+   ============================================================ */
+  .section {
+    padding: 96px 0;
+  }
+  .section-head {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 52px;
+  }
+  .eyebrow-tag {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .section-desc {
+    margin-top: 16px;
+    font-size: 16px;
+    color: var(--text-2);
+    line-height: 1.65;
+  }
+
+  /* ============================================================
+   BOOKING MODAL — stilovi i logika su izmešteni u
+   src/components/BookingModal.astro
+   ============================================================ */
+
+  /* ============================================================
+   CENOVNIK
+   ============================================================ */
+  .ptab {
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .ptab:hover {
+    color: var(--text);
+    border-color: var(--border-hi);
+  }
+  .ptab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .ppanel {
+    display: none;
+  }
+  .ppanel.active {
+    display: block;
+  }
+
+  /* ============================================================
+   RESPONSIVE
+   ============================================================ */
+  @media (max-width: 1024px) {
+    .fc-top {
+      left: 12px;
+    }
+    .fc-bottom {
+      right: 12px;
+    }
+  }
+  @media (max-width: 768px) {
+    .section {
+      padding: 64px 0;
+    }
+    .section-head {
+      margin-bottom: 36px;
+    }
+  }
+  @media (max-width: 480px) {
+    .container {
+      width: 90vw;
+    }
+    .section {
+      padding: 52px 0;
+    }
+    .fc-top,
+    .fc-bottom {
+      display: none;
+    }
+    .section-title {
+      font-size: clamp(25px, 7vw, 32px);
+    }
+    .section-desc {
+      font-size: 15px;
+    }
+    .ptab {
+      padding: 7px 13px;
+      font-size: 12.5px;
+    }
+  }
+</style>
+
+<script>
+  // ---- NAV ----
+  const nav = document.getElementById('nav')
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      nav?.classList.add('scrolled')
+    } else {
+      nav?.classList.remove('scrolled')
+    }
+  })
+  const burger = document.getElementById('burger')
+  const navLinks = document.getElementById('navLinks')
+  burger?.addEventListener('click', () => {
+    burger.classList.toggle('open')
+    navLinks?.classList.toggle('open')
+  })
+  navLinks?.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => {
+      burger?.classList.remove('open')
+      navLinks.classList.remove('open')
+    })
+  )
+
+  // ---- REVEAL ----
+  const io = new IntersectionObserver(
+    entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const el = e.target as HTMLElement
+          const d = Number(el.dataset.d || 0) * 80
+          setTimeout(() => el.classList.add('in'), d)
+          io.unobserve(el)
+        }
+      })
+    },
+    { threshold: 0.1 }
+  )
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el))
+
+  // ---- STATS COUNTUP ----
+  const countEls = document.querySelectorAll<HTMLElement>('[data-count]')
+  const cio = new IntersectionObserver(
+    entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return
+        const el = e.target as HTMLElement
+        const raw = el.dataset.count || '0'
+        const target = parseFloat(raw)
+        const isFloat = raw.includes('.')
+        const sufEl = el.querySelector('[data-suf]')?.outerHTML || ''
+        let cur = 0
+        const step = target / 40
+        const tick = () => {
+          cur += step
+          if (cur >= target) {
+            el.innerHTML = raw + sufEl
+          } else {
+            el.innerHTML = (isFloat ? cur.toFixed(1) : Math.floor(cur)) + sufEl
+            requestAnimationFrame(tick)
+          }
+        }
+        tick()
+        cio.unobserve(el)
+      })
+    },
+    { threshold: 0.5 }
+  )
+  countEls.forEach(el => cio.observe(el))
+
+  // ---- PRICE TABS ----
+  const ptabs = document.querySelectorAll<HTMLElement>('.ptab')
+  const ppanels = document.querySelectorAll<HTMLElement>('.ppanel')
+  ptabs.forEach(tab =>
+    tab.addEventListener('click', () => {
+      ptabs.forEach(t => t.classList.remove('active'))
+      ppanels.forEach(p => p.classList.remove('active'))
+      tab.classList.add('active')
+      const idx = tab.dataset.tab
+      document.querySelector(`.ppanel[data-panel="${idx}"]`)?.classList.add('active')
+    })
+  )
+
+  // ---- BOOKING MODAL ----
+  // Logika modala (otvaranje/zatvaranje, koraci, kalendar) je u
+  // src/components/BookingModal.astro
+</script>
