@@ -28,10 +28,12 @@ const {
     class="overflow-hidden relative max-h-[90vh] w-full max-w-[520px] translate-y-2 scale-[0.96] rounded-xl border border-border-hi bg-bg-elevated p-7 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.9)] transition-transform duration-300 [.open_&]:translate-y-0 [.open_&]:scale-100 max-[480px]:p-[22px]"
     role="dialog"
     aria-modal="true"
-    aria-label="Zakazivanje termina">
+    aria-labelledby="bookingTitle"
+    aria-describedby="bookingDescription">
     <button
       class="absolute right-[18px] top-[18px] grid h-[30px] w-[30px] cursor-pointer place-items-center rounded-sm border border-border bg-surface text-text-2 transition-colors hover:bg-surface-hi hover:text-text"
       id="closeBooking"
+      type="button"
       aria-label="Zatvori">
       <svg
         width="16"
@@ -44,8 +46,10 @@ const {
     </button>
 
     <div class="mb-6 pr-10">
-      <h2 class="text-xl font-bold tracking-[-0.02em]">Zakazivanje termina</h2>
-      <p class="mt-1 text-[13px] text-text-3">{salonName} · {salonAddress}</p>
+      <h2 class="text-xl font-bold tracking-[-0.02em]" id="bookingTitle">Zakazivanje termina</h2>
+      <p class="mt-1 text-[13px] text-text-3" id="bookingDescription">
+        {salonName} · {salonAddress}
+      </p>
     </div>
 
     <!-- step progress -->
@@ -109,6 +113,7 @@ const {
             <button
               type="button"
               class="mservice flex cursor-pointer items-center justify-between gap-3 rounded-md border border-border bg-surface px-[15px] py-[13px] text-left text-text transition-colors hover:border-border-hi hover:bg-surface-hi [&.sel]:border-accent-border [&.sel]:bg-accent-subtle"
+              aria-pressed="false"
               data-val={`${s.ime} — ${s.cena}`}>
               <span class="text-sm font-semibold text-text">{s.ime}</span>
               <span class="flex shrink-0 items-center gap-2.5">
@@ -139,6 +144,7 @@ const {
         <button
           class="btn-modal-next inline-flex items-center gap-[7px] rounded-md bg-accent px-5 py-[11px] font-sans text-sm font-semibold text-white transition hover:enabled:-translate-y-px hover:enabled:bg-accent-2 disabled:cursor-not-allowed disabled:opacity-35"
           data-go="2"
+          type="button"
           disabled
           id="mnext1">
           Nastavi
@@ -215,6 +221,7 @@ const {
       <div class="mt-5 flex justify-between">
         <button
           class="btn-modal-back mback inline-flex items-center gap-[7px] rounded-md border border-border bg-transparent px-4 py-[11px] font-sans text-sm font-medium text-text-2 transition hover:border-border-hi hover:bg-surface hover:text-text"
+          type="button"
           data-go="1">
           <svg
             width="13"
@@ -229,6 +236,7 @@ const {
         <button
           class="btn-modal-next inline-flex items-center gap-[7px] rounded-md bg-accent px-5 py-[11px] font-sans text-sm font-semibold text-white transition hover:enabled:-translate-y-px hover:enabled:bg-accent-2 disabled:cursor-not-allowed disabled:opacity-35"
           data-go="3"
+          type="button"
           disabled
           id="mnext2">
           Nastavi
@@ -270,6 +278,7 @@ const {
       <div class="mt-5 flex justify-between">
         <button
           class="btn-modal-back mback inline-flex items-center gap-[7px] rounded-md border border-border bg-transparent px-4 py-[11px] font-sans text-sm font-medium text-text-2 transition hover:border-border-hi hover:bg-surface hover:text-text"
+          type="button"
           data-go="2">
           <svg
             width="13"
@@ -284,6 +293,7 @@ const {
         <button
           class="btn-modal-next inline-flex items-center gap-[7px] rounded-md bg-accent px-5 py-[11px] font-sans text-sm font-semibold text-white transition hover:enabled:-translate-y-px hover:enabled:bg-accent-2 disabled:cursor-not-allowed disabled:opacity-35"
           data-go="4"
+          type="button"
           disabled
           id="mnext3">
           Nastavi
@@ -319,6 +329,7 @@ const {
             type="text"
             placeholder="npr. Marija Marković"
             autocomplete="name"
+            required
           />
         </div>
         <div>
@@ -332,12 +343,14 @@ const {
             type="tel"
             placeholder="06x xxx xxxx"
             autocomplete="tel"
+            required
           />
         </div>
       </div>
       <div class="mt-5 flex justify-between">
         <button
           class="btn-modal-back mback inline-flex items-center gap-[7px] rounded-md border border-border bg-transparent px-4 py-[11px] font-sans text-sm font-medium text-text-2 transition hover:border-border-hi hover:bg-surface hover:text-text"
+          type="button"
           data-go="3">
           <svg
             width="13"
@@ -351,6 +364,7 @@ const {
         </button>
         <button
           class="btn-modal-confirm inline-flex items-center gap-[7px] rounded-md bg-green px-5 py-[11px] font-sans text-sm font-semibold text-white transition hover:-translate-y-px hover:bg-[#16a34a]"
+          type="button"
           id="mconfirm">
           Potvrdi termin
           <svg
@@ -386,6 +400,7 @@ const {
       </p>
       <button
         class="inline-flex cursor-pointer items-center rounded-md border border-border-hi bg-surface px-5 py-[11px] font-sans text-sm font-semibold text-text transition hover:border-text-3 hover:bg-surface-hi"
+        type="button"
         id="mreset">Zakaži još jedan termin</button
       >
     </div>
@@ -395,16 +410,40 @@ const {
 <script>
   const modal = document.getElementById('bookingModal')
   if (modal) {
+    let lastFocused: Element | null = null
+    const focusableSelector =
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    const escapeHTML = (value: string) =>
+      value.replace(
+        /[&<>"']/g,
+        char =>
+          ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+          })[char] || char
+      )
+
     // ---- open / close ----
     const openModal = () => {
+      lastFocused = document.activeElement
       modal.classList.add('open')
       document.body.style.overflow = 'hidden'
       modal.removeAttribute('aria-hidden')
+      requestAnimationFrame(() => {
+        const firstControl =
+          modal.querySelector<HTMLElement>('.mservice') ||
+          modal.querySelector<HTMLElement>('#closeBooking')
+        firstControl?.focus()
+      })
     }
     const closeModal = () => {
       modal.classList.remove('open')
       document.body.style.overflow = ''
       modal.setAttribute('aria-hidden', 'true')
+      if (lastFocused instanceof HTMLElement) lastFocused.focus()
     }
 
     document.getElementById('openBooking')?.addEventListener('click', openModal)
@@ -420,7 +459,25 @@ const {
       if (e.target === modal) closeModal()
     })
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeModal()
+      if (!modal.classList.contains('open')) return
+      if (e.key === 'Escape') {
+        closeModal()
+        return
+      }
+      if (e.key !== 'Tab') return
+      const focusable = Array.from(modal.querySelectorAll<HTMLElement>(focusableSelector)).filter(
+        el => el.offsetParent !== null
+      )
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
     })
 
     // ---- state ----
@@ -445,8 +502,12 @@ const {
     // ---- step 1: services ----
     modal.querySelectorAll<HTMLElement>('.mservice').forEach(b =>
       b.addEventListener('click', () => {
-        modal!.querySelectorAll('.mservice').forEach(x => x.classList.remove('sel'))
+        modal!.querySelectorAll('.mservice').forEach(x => {
+          x.classList.remove('sel')
+          x.setAttribute('aria-pressed', 'false')
+        })
         b.classList.add('sel')
+        b.setAttribute('aria-pressed', 'true')
         state.service = b.dataset.val || ''
         ;(modal!.querySelector('#mnext1') as HTMLButtonElement).disabled = false
       })
@@ -550,12 +611,13 @@ const {
         const go = Number(b.dataset.go)
         if (go === 3) {
           const picked = modal!.querySelector('#mpickedDay')
-          if (picked) picked.innerHTML = `Izabran datum: <strong>${state.dayLabel}</strong>`
+          if (picked)
+            picked.innerHTML = `Izabran datum: <strong>${escapeHTML(state.dayLabel)}</strong>`
         }
         if (go === 4) {
           const sum = modal!.querySelector('#mbooking-summary')
           if (sum)
-            sum.innerHTML = `<strong style="color:var(--text)">Usluga:</strong> ${state.service}<br><strong style="color:var(--text)">Datum:</strong> ${state.dayLabel}<br><strong style="color:var(--text)">Vreme:</strong> ${state.time}<br><strong style="color:var(--text)">Salon:</strong> Candir, Bate Brkića 26`
+            sum.innerHTML = `<strong style="color:var(--text)">Usluga:</strong> ${escapeHTML(state.service)}<br><strong style="color:var(--text)">Datum:</strong> ${escapeHTML(state.dayLabel)}<br><strong style="color:var(--text)">Vreme:</strong> ${escapeHTML(state.time)}<br><strong style="color:var(--text)">Salon:</strong> Candir, Bate Brkića 26`
         }
         showStep(go)
       })
@@ -563,19 +625,24 @@ const {
 
     // ---- confirm ----
     modal.querySelector('#mconfirm')?.addEventListener('click', () => {
-      const name = (modal!.querySelector('#mname') as HTMLInputElement).value.trim()
-      const phone = (modal!.querySelector('#mphone') as HTMLInputElement).value.trim()
+      const nameInput = modal!.querySelector('#mname') as HTMLInputElement
+      const phoneInput = modal!.querySelector('#mphone') as HTMLInputElement
+      const name = nameInput.value.trim()
+      const phone = phoneInput.value.trim()
+      nameInput.toggleAttribute('aria-invalid', !name)
+      phoneInput.toggleAttribute('aria-invalid', !phone)
       if (!name || !phone) {
-        ;(modal!.querySelector('#mname') as HTMLInputElement).focus()
+        ;(!name ? nameInput : phoneInput).focus()
         return
       }
       const txt = modal!.querySelector('#mdoneText')
       if (txt)
-        txt.innerHTML = `Hvala, <strong>${name}</strong>! Termin je potvrđen za ${state.dayLabel} u ${state.time}. Pozvaćemo te na ${phone}.`
+        txt.innerHTML = `Hvala, <strong>${escapeHTML(name)}</strong>! Termin je potvrđen za ${escapeHTML(state.dayLabel)} u ${escapeHTML(state.time)}. Pozvaćemo te na ${escapeHTML(phone)}.`
       panels.forEach(p => p.classList.remove('active'))
       modal!.querySelector('.mpanel[data-panel="done"]')?.classList.add('active')
       steps.forEach(s => s.classList.add('done'))
       if (bar) bar.style.width = '100%'
+      modal!.querySelector<HTMLElement>('#mreset')?.focus()
     })
 
     // ---- reset ----
@@ -590,6 +657,8 @@ const {
       ;(modal!.querySelector('#mnext3') as HTMLButtonElement).disabled = true
       ;(modal!.querySelector('#mname') as HTMLInputElement).value = ''
       ;(modal!.querySelector('#mphone') as HTMLInputElement).value = ''
+      ;(modal!.querySelector('#mname') as HTMLInputElement).removeAttribute('aria-invalid')
+      ;(modal!.querySelector('#mphone') as HTMLInputElement).removeAttribute('aria-invalid')
       steps.forEach(s => s.classList.remove('done', 'active'))
       renderCalendar()
       showStep(1)
