@@ -27,44 +27,57 @@ const radnoVreme = [
   { dan: 'Nedelja', sati: '08:00 — 20:00', otvoreno: true },
 ]
 
+// PNG ikone: stavi fajlove u public/services/ (vidi komentar ispod svakog img polja)
 const usluge = [
   {
     t: 'Šišanje & styling',
     d: 'Muško, žensko i dečije šišanje, fade, curlycut i precizno oblikovanje.',
-    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M9 8.5L20 3M9 15.5L20 21"/></svg>`,
+    cenaOd: 'od 800 RSD',
+    img: '/services/salon.png',
+    imgAlt: 'Šišanje i styling',
   },
   {
     t: 'Farbanje & kolor',
     d: 'Farbanje, blajhanje, dekolorizacija — bez nepotrebnog oštećenja kose.',
-    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c0 0-6.5 8-6.5 12a6.5 6.5 0 0 0 13 0C18.5 11 12 3 12 3z"/><circle cx="9" cy="14" r="1" fill="currentColor"/><circle cx="14.5" cy="13" r="1" fill="currentColor"/><circle cx="12" cy="16.5" r="1" fill="currentColor"/></svg>`,
+    cenaOd: 'od 3.500 RSD',
+    img: '/services/hair-color.png',
+    imgAlt: 'Farbanje i kolor',
   },
   {
     t: 'Pramenovi',
     d: 'Balayage, Air Touch, Babylights — tehnike koje stvaraju dubinu i sjaj.',
-    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 20V5M19 20V4"/><path d="M8 15l3-9M11 17l4-11M14 14l5-8"/></svg>`,
+    cenaOd: 'od 2.100 RSD',
+    img: '/services/hair-dye.png',
+    imgAlt: 'Pramenovi',
   },
   {
     t: 'Nega kose',
     d: 'Olaplex, keratin, botoks i tretmani koji obnavljaju strukturu vlasi.',
-    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 10h4v11h-4z"/><path d="M10 10V7.5A2 2 0 0 1 14 7.5V10"/><path d="M12 4v2"/><path d="M9.5 14.5h5M9.5 17.5h5"/></svg>`,
+    cenaOd: 'od 600 RSD',
+    img: '/services/foam.png',
+    imgAlt: 'Nega kose',
   },
   {
     t: 'Svečane frizure',
     d: 'Frizure za venčanja i posebne prilike koje traju ceo dan.',
-    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M5 18l2.2-9 4.8 5 4.8-5L19 18"/><circle cx="5" cy="8" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="19" cy="8" r="1.5"/></svg>`,
+    cenaOd: 'od 2.000 RSD',
+    img: '/services/diadem.png',
+    imgAlt: 'Svečane frizure',
   },
   {
     t: 'Brada & berber',
     d: 'Oblikovanje brade i kompletan berberski tretman.',
-    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14l13-7 5 5-7 12-6-2-5-8z"/><path d="M14 7l4 4"/></svg>`,
+    cenaOd: 'od 400 RSD',
+    img: '/services/beard.png',
+    imgAlt: 'Brada i berber',
   },
 ]
 
 const heroSlides = [
   {
-    src: 'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1100&q=90',
-    label: 'Candir studio',
-    sub: 'Bate Brkića 26 · Novi Sad',
+    src: 'https://images.unsplash.com/photo-1560869713-7d0a29430803?auto=format&fit=crop&w=1100&q=90',
+    label: 'Naš rad',
+    sub: 'Balayage & stajling',
   },
   {
     src: 'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=1100&q=90',
@@ -72,9 +85,9 @@ const heroSlides = [
     sub: 'Frizeri & koloristi',
   },
   {
-    src: 'https://images.unsplash.com/photo-1560869713-7d0a29430803?auto=format&fit=crop&w=1100&q=90',
-    label: 'Naš rad',
-    sub: 'Balayage & stajling',
+    src: 'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1100&q=90',
+    label: 'Candir studio',
+    sub: 'Bate Brkića 26 · Novi Sad',
   },
 ]
 
@@ -833,67 +846,42 @@ const navLinks = [
           </p>
         </div>
 
-        <div class="svc-menu reveal" data-svc-menu>
-          <div class="svc-menu-head" aria-hidden="true">
-            <span class="svc-menu-tag">Meni usluga</span>
-            <span class="svc-menu-count">{usluge.length} kategorija</span>
-          </div>
-
-          <div
-            class="svc-nav"
-            role="tablist"
-            aria-label="Kategorije usluga">
-            {
-              usluge.map((u, i) => (
-                <button
-                  type="button"
-                  class={`svc-nav-item ${i === 0 ? 'active' : ''}`}
-                  role="tab"
-                  aria-selected={i === 0 ? 'true' : 'false'}
-                  aria-controls={`svc-panel-${i}`}
-                  id={`svc-tab-${i}`}
-                  data-svc-tab={i}>
-                  <span class="svc-nav-num">{String(i + 1).padStart(2, '0')}</span>
-                  <span class="svc-nav-label">{u.t}</span>
-                  <span class="svc-nav-arrow" aria-hidden="true">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                </button>
-              ))
-            }
-          </div>
-
-          <div class="svc-stage">
-            {
-              usluge.map((u, i) => (
-                <div
-                  class={`svc-panel ${i === 0 ? 'active' : ''}`}
-                  id={`svc-panel-${i}`}
-                  role="tabpanel"
-                  aria-labelledby={`svc-tab-${i}`}
-                  aria-hidden={i === 0 ? 'false' : 'true'}
-                  data-svc-panel={i}>
-                  <span class="svc-panel-index">
-                    {String(i + 1).padStart(2, '0')} / {String(usluge.length).padStart(2, '0')}
-                  </span>
-                  <div class="svc-panel-icon" set:html={u.icon} />
-                  <h3 class="svc-panel-title">{u.t}</h3>
-                  <p class="svc-panel-desc">{u.d}</p>
-                  <a href="#cenovnik" class="svc-panel-link">
-                    Pogledaj cene
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </a>
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            usluge.map((u, i) => (
+              <article
+                class="group reveal relative flex flex-col items-center overflow-hidden rounded-2xl border border-border bg-bg-raised px-7 pb-8 pt-10 text-center transition-all duration-300 hover:-translate-y-1.5 hover:border-border-hi hover:bg-bg-elevated hover:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.65)] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-[linear-gradient(90deg,transparent,var(--color-accent-border),transparent)] before:opacity-0 before:transition-opacity before:content-[''] hover:before:opacity-100"
+                data-d={i % 3}
+              >
+                <div class="relative mb-7 flex h-28 w-full items-center justify-center">
+                  <span
+                    class="pointer-events-none absolute h-24 w-24 rounded-full bg-[radial-gradient(circle,var(--color-accent-subtle)_0%,transparent_70%)] opacity-60 transition-opacity group-hover:opacity-100"
+                    aria-hidden="true"
+                  ></span>
+                  <img
+                    src={u.img}
+                    alt={u.imgAlt}
+                    width="96"
+                    height="96"
+                    loading="lazy"
+                    decoding="async"
+                    class="relative z-[1] h-24 w-24 object-contain transition-transform duration-500 group-hover:scale-110"
+                    data-svc-icon
+                  />
                 </div>
-              ))
-            }
-            <div class="svc-progress" aria-hidden="true">
-              <span class="svc-progress-bar" data-svc-progress style="width: 16.66%"></span>
-            </div>
-          </div>
+
+                <h3 class="font-display text-xl font-bold tracking-[-0.02em] text-text">{u.t}</h3>
+                <p class="mt-3 max-w-[260px] text-sm leading-[1.65] text-text-2">{u.d}</p>
+
+                <a
+                  href="#cenovnik"
+                  class="mt-7 inline-flex items-center justify-center rounded-full border border-accent-border bg-accent-subtle px-5 py-2 text-[13px] font-semibold text-accent transition-all group-hover:border-accent group-hover:bg-accent group-hover:text-white"
+                >
+                  {u.cenaOd}
+                </a>
+              </article>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -2056,263 +2044,6 @@ const navLinks = [
   }
 
   /* ============================================================
-   USLUGE — salon meni (split panel)
-   ============================================================ */
-  .svc-menu {
-    display: grid;
-    grid-template-columns: minmax(240px, 320px) 1fr;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    border-radius: var(--r-xl);
-    background: var(--bg-raised);
-    min-height: 400px;
-  }
-  .svc-menu-head {
-    display: none;
-  }
-  .svc-nav {
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid var(--border);
-    background: var(--bg-elevated);
-  }
-  .svc-nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    padding: 18px 20px;
-    border: none;
-    border-bottom: 1px solid var(--border);
-    background: transparent;
-    font-family: var(--font-sans);
-    text-align: left;
-    cursor: pointer;
-    transition:
-      background 0.25s ease,
-      color 0.25s ease;
-    position: relative;
-  }
-  .svc-nav-item:last-child {
-    border-bottom: none;
-  }
-  .svc-nav-item::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: var(--accent-gradient);
-    transform: scaleY(0);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .svc-nav-item:hover {
-    background: var(--surface);
-  }
-  .svc-nav-item.active {
-    background: var(--surface);
-  }
-  .svc-nav-item.active::before {
-    transform: scaleY(1);
-  }
-  .svc-nav-num {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text-3);
-    min-width: 22px;
-  }
-  .svc-nav-item.active .svc-nav-num {
-    color: var(--accent);
-  }
-  .svc-nav-label {
-    flex: 1;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-2);
-    line-height: 1.3;
-  }
-  .svc-nav-item.active .svc-nav-label {
-    color: var(--text);
-  }
-  .svc-nav-arrow {
-    color: var(--text-3);
-    opacity: 0;
-    transform: translateX(-4px);
-    transition:
-      opacity 0.25s ease,
-      transform 0.25s ease;
-  }
-  .svc-nav-item.active .svc-nav-arrow {
-    opacity: 1;
-    transform: none;
-    color: var(--accent);
-  }
-  .svc-stage {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 44px;
-    background:
-      radial-gradient(circle at 85% 15%, var(--accent-subtle), transparent 50%),
-      var(--bg-raised);
-  }
-  .svc-panel {
-    display: none;
-    width: 100%;
-    max-width: 420px;
-    animation: svcIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .svc-panel.active {
-    display: block;
-  }
-  @keyframes svcIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-  .svc-panel-index {
-    display: block;
-    margin-bottom: 20px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    color: var(--text-3);
-  }
-  .svc-panel-icon {
-    display: grid;
-    place-items: center;
-    width: 64px;
-    height: 64px;
-    margin-bottom: 22px;
-    border-radius: var(--r-md);
-    border: 1px solid var(--accent-border);
-    background: var(--accent-gradient-soft);
-    color: var(--accent);
-  }
-  .svc-panel-icon svg {
-    display: block;
-  }
-  .svc-panel-title {
-    font-family: var(--font-display);
-    font-size: clamp(26px, 3.5vw, 34px);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    color: var(--text);
-  }
-  .svc-panel-desc {
-    margin-top: 14px;
-    font-size: 15.5px;
-    line-height: 1.65;
-    color: var(--text-2);
-  }
-  .svc-panel-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 24px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--accent);
-    transition: gap 0.2s ease;
-  }
-  .svc-panel-link:hover {
-    gap: 10px;
-  }
-  .svc-progress {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 3px;
-    background: var(--surface);
-  }
-  .svc-progress-bar {
-    display: block;
-    height: 100%;
-    background: var(--accent-gradient);
-    transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  @media (max-width: 768px) {
-    .svc-menu {
-      grid-template-columns: 1fr;
-      min-height: auto;
-    }
-    .svc-menu-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-elevated);
-    }
-    .svc-menu-tag {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-    .svc-menu-count {
-      font-size: 13px;
-      color: var(--text-3);
-    }
-    .svc-nav {
-      flex-direction: row;
-      overflow-x: auto;
-      border-right: none;
-      border-bottom: 1px solid var(--border);
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      user-select: none;
-      scroll-snap-type: x proximity;
-    }
-    .svc-nav::-webkit-scrollbar {
-      display: none;
-    }
-    .svc-nav-item {
-      flex-shrink: 0;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-      width: auto;
-      min-width: 140px;
-      padding: 14px 16px;
-      border-bottom: none;
-      border-right: 1px solid var(--border);
-      scroll-snap-align: start;
-    }
-    .svc-nav-item::before {
-      top: auto;
-      right: 0;
-      left: 0;
-      bottom: 0;
-      width: auto;
-      height: 3px;
-      transform: scaleX(0);
-    }
-    .svc-nav-item.active::before {
-      transform: scaleX(1);
-    }
-    .svc-nav-arrow {
-      display: none;
-    }
-    .svc-stage {
-      padding: 28px 22px 36px;
-      min-height: 280px;
-    }
-  }
-
-  /* ============================================================
    GALERIJA — blagi ulaz/izlaz kartica na ivicama ekrana
    (scroll-driven animacija; browseri bez podrške je preskaču)
    ============================================================ */
@@ -2493,9 +2224,6 @@ const navLinks = [
     }
     .ht-scissors {
       display: none;
-    }
-    .svc-panel {
-      animation: none;
     }
   }
 </style>
@@ -2845,9 +2573,7 @@ const navLinks = [
       true
     )
   }
-  document
-    .querySelectorAll<HTMLElement>('[data-gallery], .svc-nav')
-    .forEach(enableDragScroll)
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach(enableDragScroll)
 
   // galerija na startu centrirana (jednako "iseckana" levo i desno)
   const galleryStrip = document.querySelector<HTMLElement>('[data-gallery]')
@@ -2855,33 +2581,12 @@ const navLinks = [
     galleryStrip.scrollLeft = (galleryStrip.scrollWidth - galleryStrip.clientWidth) / 2
   }
 
-  // ---- USLUGE MENI ----
-  const svcMenu = document.querySelector<HTMLElement>('[data-svc-menu]')
-  if (svcMenu) {
-    const svcTabs = svcMenu.querySelectorAll<HTMLElement>('[data-svc-tab]')
-    const svcPanels = svcMenu.querySelectorAll<HTMLElement>('[data-svc-panel]')
-    const svcProgress = svcMenu.querySelector<HTMLElement>('[data-svc-progress]')
-    const total = svcTabs.length
-
-    const activateSvc = (idx: number) => {
-      svcTabs.forEach(t => {
-        const on = Number(t.dataset.svcTab) === idx
-        t.classList.toggle('active', on)
-        t.setAttribute('aria-selected', String(on))
-      })
-      svcPanels.forEach(p => {
-        const on = Number(p.dataset.svcPanel) === idx
-        p.classList.toggle('active', on)
-        p.setAttribute('aria-hidden', String(!on))
-      })
-      if (svcProgress) svcProgress.style.width = `${((idx + 1) / total) * 100}%`
-      svcTabs[idx]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
-    }
-
-    svcTabs.forEach(tab => {
-      tab.addEventListener('click', () => activateSvc(Number(tab.dataset.svcTab)))
-    })
-  }
+  // ---- USLUGE — sakrij slomljene PNG dok ne ubaciš fajlove u public/services/ ----
+  document.querySelectorAll<HTMLImageElement>('[data-svc-icon]').forEach(img => {
+    img.addEventListener('error', () => {
+      img.style.display = 'none'
+    }, { once: true })
+  })
 
   // ---- PRICE TABS ----
   const ptabs = document.querySelectorAll<HTMLElement>('.ptab')
