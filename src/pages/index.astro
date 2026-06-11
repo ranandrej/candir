@@ -256,6 +256,47 @@ const navLinks = [
 ---
 
 <Layout>
+  <!-- ===================== SPLASH ===================== -->
+  <div id="splash" aria-hidden="true">
+    <div class="splash-half splash-top"></div>
+    <div class="splash-half splash-bottom"></div>
+    <div class="splash-cutline"></div>
+    <div class="splash-brand">
+      <span class="splash-logo">
+        <svg width="26" height="26" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8C1.5 11.59 4.41 14.5 8 14.5C11.59 14.5 14.5 11.59 14.5 8"
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linecap="round"></path>
+          <path
+            d="M11 4L14.5 4L14.5 7.5"
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+          <path d="M14.5 4L9 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </span>
+      <span class="splash-name">
+        {'CANDIR'.split('').map((ch, i) => <span style={`--i:${i}`}>{ch}</span>)}
+      </span>
+    </div>
+    <span class="splash-sub">Frizerski salon · Novi Sad</span>
+    <span class="splash-scissors" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none">
+        <circle cx="18" cy="47" r="8" stroke="currentColor" stroke-width="4"></circle>
+        <circle cx="18" cy="17" r="8" stroke="currentColor" stroke-width="4"></circle>
+        <path
+          d="M25 43L54 14M25 21l29 29M27 32h8"
+          stroke="currentColor"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+    </span>
+  </div>
+
   <!-- ===================== NAV ===================== -->
   <header
     id="nav"
@@ -295,7 +336,7 @@ const navLinks = [
           navLinks.map(l => (
             <a
               href={l.href}
-              class="rounded-lg px-3 py-[7px] text-[13.5px] font-medium text-text-2 transition-colors hover:bg-surface hover:text-text max-md:px-4 max-md:py-[13px] max-md:text-base">
+              class="rounded-lg px-3 py-[7px] text-[15.5px] font-medium text-text-2 transition-colors hover:bg-surface hover:text-text max-md:px-4 max-md:py-[13px] max-md:text-base">
               {l.label}
             </a>
           ))
@@ -306,7 +347,7 @@ const navLinks = [
         <a
           href={salon.phoneBookingHref}
           title="Pozovi"
-          class="flex items-center gap-[7px] rounded-lg border border-border px-3 py-[7px] text-[13px] text-text-2 transition-colors hover:border-border-hi hover:bg-surface hover:text-text">
+          class="flex items-center gap-[7px] rounded-lg border border-border px-3 py-[7px] text-[14px] text-text-2 transition-colors hover:border-border-hi hover:bg-surface hover:text-text">
           <svg
             width="15"
             height="15"
@@ -322,7 +363,7 @@ const navLinks = [
         </a>
         <a
           href="#booking"
-          class="inline-flex items-center gap-[7px] whitespace-nowrap rounded-lg bg-accent px-4 py-2 text-[13.5px] font-semibold text-white transition hover:-translate-y-px hover:bg-accent-2 max-md:hidden">
+          class="inline-flex items-center gap-[7px] whitespace-nowrap rounded-lg bg-accent px-4 py-2 text-[14.5px] font-semibold text-white transition hover:-translate-y-px hover:bg-accent-2 max-md:hidden">
           Zakaži termin
           <svg
             width="13"
@@ -650,7 +691,7 @@ const navLinks = [
           <div class="reveal mt-8 flex flex-wrap gap-2.5 max-[480px]:gap-2" data-d="2">
             <a
               href="#booking"
-              class="btn-primary max-md:flex-1 max-md:justify-center max-[480px]:w-full">
+              class="btn-primary max-md:w-full max-md:justify-center">
               Zakaži termin
               <svg
                 width="14"
@@ -663,7 +704,7 @@ const navLinks = [
             </a>
             <a
               href={salon.phoneBookingHref}
-              class="btn-secondary max-md:flex-1 max-md:justify-center max-[480px]:w-full">
+              class="btn-secondary max-md:w-full max-md:justify-center">
               <svg
                 width="14"
                 height="14"
@@ -732,7 +773,7 @@ const navLinks = [
                 ></path></svg
               >
             </div>
-            <span class="text-[13px] text-text-2"
+            <span class="text-[14px] text-text-2"
               ><strong class="text-text">9.5/10</strong> · 296 recenzija</span
             >
           </div>
@@ -867,7 +908,8 @@ const navLinks = [
         </div>
       </div>
       <div
-        class="flex gap-3 overflow-x-auto px-[calc((100vw-min(1160px,92vw))/2)] py-5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        data-gallery
+        class="flex cursor-grab select-none gap-3 overflow-x-auto px-[calc((100vw-min(1160px,92vw))/2)] py-5 [justify-content:safe_center] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [&.dragging]:cursor-grabbing [&_img]:pointer-events-none">
         {/* ZAMENI ove src linkove sa pravim fotografijama radova */}
         {
           [
@@ -906,7 +948,7 @@ const navLinks = [
                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div class="absolute inset-0 flex items-end bg-[linear-gradient(180deg,transparent_50%,rgba(13,13,15,0.85))] px-4 py-[18px] opacity-0 transition-opacity group-hover:opacity-100">
-                <span class="text-[13px] font-semibold text-white">{g.t}</span>
+                <span class="text-[15px] font-semibold text-white">{g.t}</span>
               </div>
             </div>
           ))
@@ -927,7 +969,7 @@ const navLinks = [
             </p>
 
             <ul class="mt-6 grid list-none gap-[11px] p-0">
-              <li class="flex items-center gap-2.5 text-[14.5px] text-text-2">
+              <li class="flex items-center gap-2.5 text-[15.5px] text-text-2">
                 <svg
                   width="14"
                   height="14"
@@ -938,7 +980,7 @@ const navLinks = [
                 >
                 Instant potvrda termina
               </li>
-              <li class="flex items-center gap-2.5 text-[14.5px] text-text-2">
+              <li class="flex items-center gap-2.5 text-[15.5px] text-text-2">
                 <svg
                   width="14"
                   height="14"
@@ -949,7 +991,7 @@ const navLinks = [
                 >
                 Podsetnik putem SMS-a
               </li>
-              <li class="flex items-center gap-2.5 text-[14.5px] text-text-2">
+              <li class="flex items-center gap-2.5 text-[15.5px] text-text-2">
                 <svg
                   width="14"
                   height="14"
@@ -960,7 +1002,7 @@ const navLinks = [
                 >
                 Besplatno otkazivanje do 24h ranije
               </li>
-              <li class="flex items-center gap-2.5 text-[14.5px] text-text-2">
+              <li class="flex items-center gap-2.5 text-[15.5px] text-text-2">
                 <svg
                   width="14"
                   height="14"
@@ -985,7 +1027,7 @@ const navLinks = [
               >
             </button>
 
-            <p class="mt-3.5 text-[13.5px] text-text-3">
+            <p class="mt-3.5 text-[14.5px] text-text-3">
               Ili pozovi direktno:
               <a
                 href={salon.phoneBookingHref}
@@ -1008,7 +1050,7 @@ const navLinks = [
                 class="h-[400px] w-full object-cover"
               />
               <div
-                class="absolute bottom-[18px] left-[18px] flex items-center gap-2 rounded-full border border-border-hi bg-[rgba(13,13,15,0.88)] px-3.5 py-2 text-[13px] font-semibold text-text backdrop-blur-md">
+                class="absolute bottom-[18px] left-[18px] flex items-center gap-2 rounded-full border border-border-hi bg-[rgba(13,13,15,0.88)] px-3.5 py-2 text-[14px] font-semibold text-text backdrop-blur-md">
                 <span
                   class="h-[7px] w-[7px] rounded-full bg-green shadow-[0_0_6px_rgba(34,197,94,0.7)]"
                 ></span>
@@ -1060,18 +1102,24 @@ const navLinks = [
                 aria-hidden={i === 0 ? 'false' : 'true'}
                 data-panel={i}>
                 {c.stavke.map(s => (
-                  <div class="reveal mb-2 flex items-center justify-between gap-4 rounded-md border border-border bg-bg-raised px-[18px] py-4 transition-all hover:translate-x-1 hover:border-border-hi hover:bg-bg-elevated max-[480px]:p-3.5">
+                  <button
+                    type="button"
+                    data-book-ime={s.ime}
+                    data-book-cena={`${s.cena} RSD`}
+                    data-book-trajanje={s.trajanje}
+                    aria-label={`Zakaži: ${s.ime}`}
+                    class="reveal mb-2 flex w-full cursor-pointer items-center justify-between gap-4 rounded-md border border-border bg-bg-raised px-[18px] py-4 text-left font-sans transition-all hover:translate-x-1 hover:border-border-hi hover:bg-bg-elevated max-[480px]:p-3.5">
                     <div>
-                      <span class="flex flex-wrap items-center gap-[7px] text-[15px] font-semibold text-text max-[480px]:text-sm">
+                      <span class="flex flex-wrap items-center gap-[7px] text-[16px] font-semibold text-text max-[480px]:text-[15px]">
                         {s.ime}
                         {s.tag && (
                           <span
-                            class={`inline-flex rounded-[4px] border px-[7px] py-0.5 text-[10px] font-bold uppercase tracking-[0.05em] ${s.tag.includes('%') ? 'border-[rgba(34,197,94,0.3)] bg-[rgba(34,197,94,0.1)] text-green' : s.tag === 'premium' ? 'border-[rgba(168,85,247,0.3)] bg-[rgba(168,85,247,0.1)] text-[#a855f7]' : 'border-accent-border bg-accent-subtle text-accent'}`}>
+                            class={`inline-flex rounded-[4px] border px-[7px] py-0.5 text-[11px] font-bold uppercase tracking-[0.05em] ${s.tag.includes('%') ? 'border-[rgba(34,197,94,0.3)] bg-[rgba(34,197,94,0.1)] text-green' : s.tag === 'premium' ? 'border-[rgba(168,85,247,0.3)] bg-[rgba(168,85,247,0.1)] text-[#a855f7]' : 'border-accent-border bg-accent-subtle text-accent'}`}>
                             {s.tag}
                           </span>
                         )}
                       </span>
-                      <span class="mt-1 flex items-center gap-1 text-xs text-text-3">
+                      <span class="mt-1 flex items-center gap-1 text-[14px] text-text-3">
                         <svg
                           width="11"
                           height="11"
@@ -1087,13 +1135,13 @@ const navLinks = [
                     </div>
                     <div class="flex shrink-0 items-center gap-2">
                       {s.staraCena && (
-                        <span class="text-[13px] text-text-3 line-through">{s.staraCena}</span>
+                        <span class="text-[14px] text-text-3 line-through">{s.staraCena}</span>
                       )}
-                      <span class="text-[17px] font-bold text-text [font-variant-numeric:tabular-nums]">
-                        {s.cena} <small class="text-xs font-normal text-text-3">RSD</small>
+                      <span class="text-[18px] font-bold text-text [font-variant-numeric:tabular-nums]">
+                        {s.cena} <small class="text-[13px] font-normal text-text-3">RSD</small>
                       </span>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             ))
@@ -1122,7 +1170,7 @@ const navLinks = [
                       </svg>
                     ))}
                   </div>
-                  <span class="rounded-full border border-accent-border bg-accent-subtle px-[9px] py-[3px] text-xs font-bold text-accent">
+                  <span class="rounded-full border border-accent-border bg-accent-subtle px-[9px] py-[3px] text-[13px] font-bold text-accent">
                     {r.ocena}/10
                   </span>
                 </div>
@@ -1130,12 +1178,12 @@ const navLinks = [
                   „{r.tekst}"
                 </blockquote>
                 <div class="mt-[18px] flex items-center gap-3">
-                  <div class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-full bg-accent text-sm font-bold text-white">
+                  <div class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-full bg-accent text-[15px] font-bold text-white">
                     {r.ime.charAt(0)}
                   </div>
                   <div>
-                    <strong class="block text-sm font-bold text-text">{r.ime}</strong>
-                    <span class="mt-0.5 block text-xs text-text-3">
+                    <strong class="block text-[15px] font-bold text-text">{r.ime}</strong>
+                    <span class="mt-0.5 block text-[13px] text-text-3">
                       {r.usluga} · {r.frizer}
                     </span>
                   </div>
@@ -1149,14 +1197,14 @@ const navLinks = [
 
     <!-- ===================== RADNO VREME + KONTAKT ===================== -->
     <section class="section" id="kontakt">
-      <div class="container grid grid-cols-[1.1fr_0.9fr] items-start gap-6 max-md:grid-cols-1">
-        <div class="reveal rounded-xl border border-border bg-bg-raised p-8">
+      <div class="container grid grid-cols-2 items-stretch gap-6 max-md:grid-cols-1">
+        <div class="reveal flex flex-col rounded-xl border border-border bg-bg-raised p-8">
           <div class="eyebrow-tag">Radno vreme</div>
           <h2 class="section-title mt-3 !text-[clamp(26px,3.5vw,38px)]">Kad smo otvoreni</h2>
-          <ul class="mt-6 list-none p-0">
+          <ul class="mt-6 flex-1 list-none p-0">
             {
               radnoVreme.map(r => (
-                <li class="flex items-center justify-between border-b border-border py-[13px] text-[14.5px] last:border-b-0">
+                <li class="flex items-center justify-between border-b border-border py-[13px] text-[15.5px] last:border-b-0">
                   <span class={`font-semibold ${r.otvoreno ? 'text-text' : 'text-text-3'}`}>
                     {r.dan}
                   </span>
@@ -1167,14 +1215,12 @@ const navLinks = [
               ))
             }
           </ul>
-        </div>
 
-        <div class="grid gap-2.5">
           <a
             href={salon.phoneBookingHref}
-            class="reveal group flex items-center gap-3.5 rounded-lg border border-border bg-bg-raised px-5 py-[18px] transition-all hover:-translate-y-0.5 hover:border-border-hi">
+            class="group mt-6 flex items-center gap-3.5 rounded-lg border border-border bg-surface px-5 py-4 transition-colors hover:border-border-hi hover:bg-surface-hi">
             <div
-              class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-sm border border-border bg-surface text-text-2">
+              class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-sm border border-border bg-bg-elevated text-text-2">
               <svg
                 width="18"
                 height="18"
@@ -1188,12 +1234,11 @@ const navLinks = [
               </svg>
             </div>
             <div class="min-w-0 flex-1">
-              <span class="mb-[3px] block text-[11.5px] text-text-3">Zakazivanje termina</span>
+              <span class="mb-[3px] block text-[12.5px] text-text-3">Zakazivanje termina</span>
               <strong class="block text-base font-bold text-text">{salon.phoneBooking}</strong>
-              <span class="mt-0.5 block text-xs text-text-3">Pon—Ned · 08—20h</span>
             </div>
             <svg
-              class="shrink-0 text-text-3"
+              class="shrink-0 text-text-3 transition-transform group-hover:translate-x-0.5"
               width="16"
               height="16"
               viewBox="0 0 24 24"
@@ -1202,17 +1247,10 @@ const navLinks = [
               stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg
             >
           </a>
-
         </div>
-      </div>
 
-      <div class="container mt-3.5">
-        <div class="map-card reveal" data-d="2">
-          <iframe
-            title="Mapa — Salon Candir, Bate Brkića 26, Novi Sad"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=19.7906644%2C45.2496654%2C19.8026644%2C45.2556654&layer=mapnik&marker=45.2526654%2C19.7966644"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="map-card reveal" data-d="1">
+          <div id="salonMap" aria-label="Mapa — Salon Candir, Bate Brkića 26, Novi Sad"></div>
           <a
             class="map-pill"
             href="https://www.openstreetmap.org/?mlat=45.2526654&mlon=19.7966644#map=17/45.2526654/19.7966644"
@@ -1255,17 +1293,17 @@ const navLinks = [
                     loading="lazy"
                     class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                   />
-                  <span class="absolute left-3 top-3 rounded-full border border-border-hi bg-[rgba(13,13,15,0.8)] px-2.5 py-1 text-[11px] font-semibold text-text backdrop-blur-sm">
+                  <span class="absolute left-3 top-3 rounded-full border border-border-hi bg-[rgba(13,13,15,0.8)] px-2.5 py-1 text-[12px] font-semibold text-text backdrop-blur-sm">
                     {b.kat}
                   </span>
                 </div>
                 <div class="p-5">
-                  <time class="text-xs text-text-3">{b.datum}</time>
+                  <time class="text-[13px] text-text-3">{b.datum}</time>
                   <h3 class="mt-2 mb-[9px] text-base font-bold leading-[1.3] text-text">
                     {b.naslov}
                   </h3>
-                  <p class="text-[13.5px] leading-[1.55] text-text-2">{b.opis}</p>
-                  <span class="mt-3.5 inline-flex items-center gap-[5px] text-[13px] font-semibold text-accent transition-all group-hover:gap-2">
+                  <p class="text-[14.5px] leading-[1.55] text-text-2">{b.opis}</p>
+                  <span class="mt-3.5 inline-flex items-center gap-[5px] text-[14px] font-semibold text-accent transition-all group-hover:gap-2">
                     Pročitaj više
                     <svg
                       width="12"
@@ -1305,7 +1343,7 @@ const navLinks = [
                 <strong class="block text-xl font-extrabold tracking-[-0.01em] text-text">
                   {p.ime}
                 </strong>
-                <span class="mt-[5px] block text-[12.5px] text-text-3">{p.tip}</span>
+                <span class="mt-[5px] block text-[13.5px] text-text-3">{p.tip}</span>
               </div>
             ))
           }
@@ -1332,19 +1370,19 @@ const navLinks = [
           </p>
           <div class="mt-6 flex flex-wrap gap-2">
             <span
-              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[12.5px] text-text-2"
+              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[13.5px] text-text-2"
               >Top Salon 2021</span
             >
             <span
-              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[12.5px] text-text-2"
+              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[13.5px] text-text-2"
               >Top Salon 2022</span
             >
             <span
-              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[12.5px] text-text-2"
+              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[13.5px] text-text-2"
               >Serbian Fashion Week</span
             >
             <span
-              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[12.5px] text-text-2"
+              class="rounded-full border border-border-hi bg-surface px-3 py-1.5 text-[13.5px] text-text-2"
               >AlterEgo akademija</span
             >
           </div>
@@ -1360,10 +1398,10 @@ const navLinks = [
                 </div>
                 <div class="flex-1">
                   <strong class="text-[15px] font-bold text-text">{m.ime}</strong>
-                  <span class="mt-[3px] mb-[7px] block text-xs font-semibold text-accent">
+                  <span class="mt-[3px] mb-[7px] block text-[13px] font-semibold text-accent">
                     {m.uloga}
                   </span>
-                  <p class="text-[13px] leading-[1.5] text-text-2">{m.opis}</p>
+                  <p class="text-[14px] leading-[1.5] text-text-2">{m.opis}</p>
                 </div>
               </article>
             ))
@@ -1424,7 +1462,7 @@ const navLinks = [
           </span>
           <span class="font-sans text-[15px] font-bold tracking-[0.12em] text-text">CANDIR</span>
         </a>
-        <p class="mb-[18px] mt-3.5 text-[13.5px] leading-[1.6] text-text-3">
+        <p class="mb-[18px] mt-3.5 text-[14.5px] leading-[1.6] text-text-3">
           Premium frizerski salon u Novom Sadu.<br />Bate Brkića 26.
         </p>
         <div
@@ -1471,23 +1509,23 @@ const navLinks = [
       </div>
 
       <div
-        class="grid grid-cols-3 gap-[30px] max-md:grid-cols-2 max-[480px]:grid-cols-1 [&_a]:block [&_a]:py-1 [&_a]:text-[13.5px] [&_a]:text-text-3 [&_a]:transition-colors [&_a:hover]:text-text">
+        class="grid grid-cols-3 gap-[30px] max-md:grid-cols-2 max-[480px]:grid-cols-1 [&_a]:block [&_a]:py-1 [&_a]:text-[14.5px] [&_a]:text-text-3 [&_a]:transition-colors [&_a:hover]:text-text">
         <div>
-          <h4 class="mb-3.5 text-[13px] font-bold tracking-[0.04em] text-text">Salon</h4>
+          <h4 class="mb-3.5 text-[14px] font-bold tracking-[0.04em] text-text">Salon</h4>
           <a href="#usluge">Usluge</a>
           <a href="#cenovnik">Cenovnik</a>
           <a href="#recenzije">Recenzije</a>
           <a href="#o-nama">O nama</a>
         </div>
         <div>
-          <h4 class="mb-3.5 text-[13px] font-bold tracking-[0.04em] text-text">Resursi</h4>
+          <h4 class="mb-3.5 text-[14px] font-bold tracking-[0.04em] text-text">Resursi</h4>
           <a href="#blog">Blog</a>
           <a href="#booking">Zakazivanje</a>
           <a href="#">Uslovi korišćenja</a>
           <a href="#">Politika privatnosti</a>
         </div>
         <div>
-          <h4 class="mb-3.5 text-[13px] font-bold tracking-[0.04em] text-text">Kontakt</h4>
+          <h4 class="mb-3.5 text-[14px] font-bold tracking-[0.04em] text-text">Kontakt</h4>
           <a href={salon.phoneBookingHref}>{salon.phoneBooking}</a>
           <a href={`mailto:${salon.email}`}>{salon.email}</a>
           <a href="#kontakt">{salon.address}</a>
@@ -1496,7 +1534,7 @@ const navLinks = [
     </div>
 
     <div
-      class="container mt-10 flex flex-wrap justify-between gap-4 border-t border-border pt-[22px] text-[12.5px] text-text-3">
+      class="container mt-10 flex flex-wrap justify-between gap-4 border-t border-border pt-[22px] text-[13.5px] text-text-3">
       <span>© 2026 Salon Candir · Nebojša Milošević</span>
       <span>Novi Sad, Srbija</span>
     </div>
@@ -1512,6 +1550,155 @@ const navLinks = [
   .container {
     width: min(1160px, 92vw);
     margin: 0 auto;
+  }
+
+  /* ============================================================
+   SPLASH — uvodni ekran: logo + makaze koje "preseku" ekran
+   ============================================================ */
+  #splash {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+  }
+  #splash.cut {
+    pointer-events: none;
+  }
+  .splash-half {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50.5%;
+    background: #08080b;
+    transition: transform 0.65s cubic-bezier(0.7, 0, 0.25, 1);
+  }
+  .splash-top {
+    top: 0;
+  }
+  .splash-bottom {
+    bottom: 0;
+  }
+  #splash.cut .splash-top {
+    transform: translateY(-101%);
+  }
+  #splash.cut .splash-bottom {
+    transform: translateY(101%);
+  }
+  .splash-brand {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(50% + 26px);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .splash-logo {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: var(--accent-gradient);
+    box-shadow: var(--accent-glow);
+    opacity: 0;
+    animation: splashPop 0.7s cubic-bezier(0.16, 1.4, 0.3, 1) 0.1s both;
+  }
+  .splash-name {
+    display: flex;
+    font-size: clamp(34px, 7vw, 54px);
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    margin-right: -0.22em;
+    color: var(--text);
+  }
+  .splash-name span {
+    display: inline-block;
+    opacity: 0;
+    animation: splashRise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(0.32s + var(--i) * 0.07s);
+  }
+  .splash-sub {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(50% + 26px);
+    z-index: 1;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    opacity: 0;
+    animation: splashRise 0.6s ease 0.9s both;
+  }
+  .splash-cutline {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    border-top: 2px dashed rgba(255, 99, 99, 0.55);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: splashCutGrow 0.85s ease-in-out 1.05s both;
+  }
+  .splash-scissors {
+    position: absolute;
+    top: 50%;
+    left: -8%;
+    z-index: 2;
+    width: clamp(38px, 5vw, 52px);
+    margin-top: calc(clamp(38px, 5vw, 52px) / -2);
+    color: var(--accent);
+    filter: drop-shadow(0 0 14px rgba(255, 99, 99, 0.55));
+    animation: splashTravel 0.85s ease-in-out 1.05s both;
+  }
+  .splash-scissors svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    transform-origin: 30% 50%;
+    animation: scissorSnip 0.3s ease-in-out infinite;
+  }
+  #splash.cut .splash-brand,
+  #splash.cut .splash-sub,
+  #splash.cut .splash-cutline,
+  #splash.cut .splash-scissors {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  @keyframes splashPop {
+    from {
+      opacity: 0;
+      transform: scale(0.4) rotate(-14deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes splashRise {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes splashCutGrow {
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes splashTravel {
+    to {
+      left: 103%;
+    }
   }
 
   /* ============================================================
@@ -1541,7 +1728,7 @@ const navLinks = [
     background-size: 140% 140%;
     color: #fff;
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     border: none;
     border-radius: var(--r-md);
@@ -1573,11 +1760,12 @@ const navLinks = [
     background: transparent;
     color: var(--text);
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     border: 1px solid var(--border-hi);
     border-radius: var(--r-md);
     cursor: pointer;
+    white-space: nowrap;
     transition:
       border-color 0.2s,
       background 0.2s,
@@ -1638,17 +1826,18 @@ const navLinks = [
    ============================================================ */
   .map-card {
     position: relative;
-    height: 360px;
+    height: 100%;
+    min-height: 400px;
     overflow: hidden;
     border: 1px solid var(--border);
     border-radius: var(--r-xl);
     box-shadow: 0 30px 70px -44px rgba(0, 0, 0, 0.9);
   }
-  .map-card iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    filter: grayscale(0.25) contrast(1.04) brightness(0.96) saturate(1.05);
+  #salonMap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--bg-elevated);
   }
   .map-card::after {
     content: '';
@@ -1662,6 +1851,7 @@ const navLinks = [
     position: absolute;
     left: 16px;
     bottom: 16px;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -1670,7 +1860,7 @@ const navLinks = [
     border: 1px solid var(--border-hi);
     background: rgba(8, 8, 11, 0.82);
     backdrop-filter: blur(10px);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--text);
     transition:
@@ -1686,7 +1876,7 @@ const navLinks = [
   }
   @media (max-width: 480px) {
     .map-card {
-      height: 280px;
+      min-height: 280px;
     }
   }
 
@@ -1835,14 +2025,14 @@ const navLinks = [
     transform: none;
   }
   .hero-card-caption span {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--text-3);
   }
   .hero-card-caption strong {
-    font-size: 13.5px;
+    font-size: 14.5px;
     font-weight: 700;
     color: var(--text);
   }
@@ -1859,7 +2049,7 @@ const navLinks = [
     border: 1px solid var(--border-hi);
     background: rgba(8, 8, 11, 0.7);
     backdrop-filter: blur(8px);
-    font-size: 11.5px;
+    font-size: 12.5px;
     font-weight: 600;
     color: var(--text-2);
     pointer-events: none;
@@ -1928,7 +2118,7 @@ const navLinks = [
   }
   .svc-nav-num {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--text-3);
     min-width: 22px;
@@ -1938,7 +2128,7 @@ const navLinks = [
   }
   .svc-nav-label {
     flex: 1;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--text-2);
     line-height: 1.3;
@@ -1992,7 +2182,7 @@ const navLinks = [
     display: block;
     margin-bottom: 20px;
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.08em;
     color: var(--text-3);
@@ -2030,7 +2220,7 @@ const navLinks = [
     align-items: center;
     gap: 6px;
     margin-top: 24px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--accent);
     transition: gap 0.2s ease;
@@ -2066,14 +2256,14 @@ const navLinks = [
       background: var(--bg-elevated);
     }
     .svc-menu-tag {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--accent);
     }
     .svc-menu-count {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-3);
     }
     .svc-nav {
@@ -2083,6 +2273,8 @@ const navLinks = [
       border-bottom: 1px solid var(--border);
       scrollbar-width: none;
       -ms-overflow-style: none;
+      user-select: none;
+      scroll-snap-type: x proximity;
     }
     .svc-nav::-webkit-scrollbar {
       display: none;
@@ -2092,10 +2284,12 @@ const navLinks = [
       flex-direction: column;
       align-items: flex-start;
       gap: 4px;
+      width: auto;
       min-width: 140px;
       padding: 14px 16px;
       border-bottom: none;
       border-right: 1px solid var(--border);
+      scroll-snap-align: start;
     }
     .svc-nav-item::before {
       top: auto;
@@ -2119,6 +2313,35 @@ const navLinks = [
   }
 
   /* ============================================================
+   GALERIJA — blagi ulaz/izlaz kartica na ivicama ekrana
+   (scroll-driven animacija; browseri bez podrške je preskaču)
+   ============================================================ */
+  @supports (animation-timeline: view()) {
+    [data-gallery] > div {
+      animation: galleryEdge linear both;
+      animation-timeline: view(inline);
+    }
+  }
+  @keyframes galleryEdge {
+    0% {
+      opacity: 0.3;
+      transform: scale(0.9);
+    }
+    14% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    86% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0.3;
+      transform: scale(0.9);
+    }
+  }
+
+  /* ============================================================
    SECTION BASE
    ============================================================ */
   .section {
@@ -2131,7 +2354,7 @@ const navLinks = [
   }
   .eyebrow-tag {
     display: inline-block;
-    font-size: 11.5px;
+    font-size: 12.5px;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -2150,7 +2373,10 @@ const navLinks = [
   }
   .section-desc {
     margin-top: 16px;
-    font-size: 16px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 19px;
+    letter-spacing: 0.01em;
     color: var(--text-2);
     line-height: 1.65;
   }
@@ -2164,11 +2390,11 @@ const navLinks = [
    CENOVNIK
    ============================================================ */
   .ptab {
-    padding: 8px 16px;
+    padding: 10px 20px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 999px;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--text-2);
     cursor: pointer;
@@ -2204,6 +2430,15 @@ const navLinks = [
     .section {
       padding: 64px 0;
     }
+    .btn-primary,
+    .btn-secondary {
+      padding: 9px 16px;
+      font-size: 14px;
+    }
+    .btn-primary.btn-xl {
+      padding: 11px 20px;
+      font-size: 14.5px;
+    }
     .section-head {
       margin-bottom: 36px;
     }
@@ -2225,11 +2460,11 @@ const navLinks = [
       font-size: clamp(25px, 7vw, 32px);
     }
     .section-desc {
-      font-size: 15px;
+      font-size: 16.5px;
     }
     .ptab {
-      padding: 7px 13px;
-      font-size: 12.5px;
+      padding: 8px 15px;
+      font-size: 13.5px;
     }
     .hero-visual {
       height: 340px;
@@ -2265,7 +2500,89 @@ const navLinks = [
   }
 </style>
 
+<style is:global>
+  /* ---- Leaflet skin (tamna tema) — globalno jer Leaflet sam pravi DOM ---- */
+  .map-card .leaflet-tile-pane {
+    filter: grayscale(0.25) contrast(1.04) brightness(0.96) saturate(1.05);
+  }
+  .map-card .leaflet-control-zoom a {
+    background: var(--bg-elevated);
+    color: var(--text);
+    border-color: var(--border-hi);
+  }
+  .map-card .leaflet-control-zoom a:hover {
+    background: var(--surface);
+    color: var(--text);
+  }
+  .map-card .leaflet-control-attribution {
+    background: rgba(8, 8, 11, 0.72);
+    color: var(--text-3);
+    font-size: 10px;
+  }
+  .map-card .leaflet-control-attribution a {
+    color: var(--text-2);
+  }
+
+  /* ---- Pin salona ---- */
+  .salon-pin {
+    position: relative;
+  }
+  .salon-pin-dot {
+    position: absolute;
+    inset: 1px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2.5px solid #fff;
+    box-shadow: 0 0 14px rgba(255, 99, 99, 0.85);
+  }
+  .salon-pin-ring {
+    position: absolute;
+    inset: -7px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    animation: pinPulse 2s ease-out infinite;
+  }
+  @keyframes pinPulse {
+    0% {
+      transform: scale(0.45);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .salon-pin-ring {
+      animation: none;
+      opacity: 0;
+    }
+  }
+</style>
+
 <script>
+  // ---- SPLASH ----
+  // Puna animacija samo jednom po sesiji; uz reduced-motion se preskače.
+  const splash = document.getElementById('splash')
+  let splashDelay = 0
+  if (splash) {
+    const skipSplash =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      sessionStorage.getItem('candirSplash')
+    if (skipSplash) {
+      splash.remove()
+    } else {
+      sessionStorage.setItem('candirSplash', '1')
+      splashDelay = 2100
+      document.body.style.overflow = 'hidden'
+      window.setTimeout(() => splash.classList.add('cut'), 1950)
+      window.setTimeout(() => {
+        splash.remove()
+        document.body.style.overflow = ''
+      }, 2700)
+    }
+  }
+
   // ---- NAV ----
   const nav = document.getElementById('nav')
   const burger = document.getElementById('burger')
@@ -2371,7 +2688,7 @@ const navLinks = [
       twTitle.classList.add('is-typing')
       scissors?.classList.add('cutting')
       typeLine(0)
-    }, 320)
+    }, 320 + splashDelay)
   }
 
   // ---- HERO STACK CAROUSEL ----
@@ -2433,6 +2750,111 @@ const navLinks = [
     render()
   }
 
+  // ---- MAPA (Leaflet — pomeranje i zum ograničeni na okolinu salona) ----
+  const mapEl = document.getElementById('salonMap')
+  const initSalonMap = () => {
+    const L = (window as any).L
+    if (!mapEl || !L || (mapEl as any)._leaflet_id) return
+
+    const salonPos: [number, number] = [45.2526654, 19.7966644]
+    // granice ~1km oko salona — dalje od toga mapa "gura" nazad
+    const bounds = L.latLngBounds([45.2436654, 19.7796644], [45.2616654, 19.8136644])
+
+    const map = L.map(mapEl, {
+      center: salonPos,
+      zoom: 16,
+      minZoom: 14,
+      maxZoom: 18,
+      maxBounds: bounds,
+      maxBoundsViscosity: 1.0,
+      scrollWheelZoom: false, // zum na +/- dugmiće ili dvoklik, da skrol stranice ne zapinje
+    })
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
+    }).addTo(map)
+
+    L.marker(salonPos, {
+      icon: L.divIcon({
+        className: 'salon-pin',
+        html: '<span class="salon-pin-ring"></span><span class="salon-pin-dot"></span>',
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+      }),
+      keyboard: false,
+      title: 'Salon Candir — Bate Brkića 26',
+    }).addTo(map)
+  }
+  if ((window as any).L) initSalonMap()
+  else window.addEventListener('load', initSalonMap)
+
+  // ---- HORIZONTALNE TRAKE (galerija, meni usluga) — drag mišem + wheel skrol ----
+  // Na touch uređajima prevlačenje radi nativno; drag logika je samo za miša.
+  const enableDragScroll = (el: HTMLElement) => {
+    el.addEventListener(
+      'wheel',
+      e => {
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && el.scrollWidth > el.clientWidth) {
+          e.preventDefault()
+          el.scrollLeft += e.deltaY
+        }
+      },
+      { passive: false }
+    )
+
+    let down = false
+    let moved = false
+    let startX = 0
+    let startScroll = 0
+    el.addEventListener('pointerdown', e => {
+      if (e.pointerType !== 'mouse' || el.scrollWidth <= el.clientWidth) return
+      down = true
+      moved = false
+      startX = e.clientX
+      startScroll = el.scrollLeft
+    })
+    el.addEventListener('pointermove', e => {
+      if (!down) return
+      const dx = e.clientX - startX
+      if (!moved && Math.abs(dx) > 5) {
+        moved = true
+        el.classList.add('dragging')
+        el.setPointerCapture(e.pointerId)
+      }
+      if (moved) el.scrollLeft = startScroll - dx
+    })
+    const endDrag = () => {
+      down = false
+      el.classList.remove('dragging')
+      window.setTimeout(() => {
+        moved = false
+      }, 0)
+    }
+    el.addEventListener('pointerup', endDrag)
+    el.addEventListener('pointercancel', endDrag)
+    // posle prevlačenja ne aktiviraj klik na dugme/karticu ispod kursora
+    el.addEventListener(
+      'click',
+      e => {
+        if (moved) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
+      },
+      true
+    )
+  }
+  document
+    .querySelectorAll<HTMLElement>('[data-gallery], .svc-nav')
+    .forEach(enableDragScroll)
+
+  // galerija na startu centrirana (jednako "iseckana" levo i desno)
+  const galleryStrip = document.querySelector<HTMLElement>('[data-gallery]')
+  if (galleryStrip) {
+    galleryStrip.scrollLeft = (galleryStrip.scrollWidth - galleryStrip.clientWidth) / 2
+  }
+
   // ---- USLUGE MENI ----
   const svcMenu = document.querySelector<HTMLElement>('[data-svc-menu]')
   if (svcMenu) {
@@ -2453,6 +2875,7 @@ const navLinks = [
         p.setAttribute('aria-hidden', String(!on))
       })
       if (svcProgress) svcProgress.style.width = `${((idx + 1) / total) * 100}%`
+      svcTabs[idx]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
     }
 
     svcTabs.forEach(tab => {
